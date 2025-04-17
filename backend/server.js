@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const initDB = require('./models/initDB');
-const RedisStore = require('connect-redis')(session); // Gunakan sebagai fungsi
+const RedisStore = require('connect-redis').default; // Gunakan .default
 const redis = require('redis');
 const app = express();
 
@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(session({
-  store: new RedisStore({ client: redisClient }), // Perbaikan ada di sini
+  store: new RedisStore({ client: redisClient }), // Gunakan cara yang sesuai
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
