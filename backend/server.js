@@ -24,7 +24,7 @@ redisClient.connect().catch((err) => {
 
 // === Middleware global ===
 app.use(cors({
-  origin: 'https://dashboard-app-alpha-gules.vercel.app/', // Sesuaikan URL frontend kamu di Vercel
+  origin: 'https://dashboard-app-alpha-gules.vercel.app/', // Sesuaikan URL frontend Anda
   credentials: true
 }));
 
@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(session({
-  store: new RedisStore({ client: redisClient }), // Gunakan cara yang sesuai
+  store: new RedisStore({ client: redisClient }), // Gunakan cara yang benar
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
