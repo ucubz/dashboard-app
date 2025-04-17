@@ -1,15 +1,23 @@
-// backend/server.js
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const initDB = require('./models/initDB');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 const app = express();
 
 // Gunakan port yang diberikan oleh Render atau fallback ke 3000
 const PORT = process.env.PORT || 3000;
 
 require('dotenv').config();
+
+// === Konfigurasi Redis ===
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379',
+  legacyMode: true // Tambahkan jika Anda menggunakan Redis 4.x atau lebih baru
+});
+redisClient.connect().catch(console.error);
 
 // === Middleware global ===
 app.use(cors({
@@ -20,9 +28,15 @@ app.use(cors({
 app.use(express.json()); // untuk parsing JSON
 app.use(bodyParser.json()); // untuk parsing JSON juga (salah satu cukup, tapi bisa dua juga)
 app.use(session({
-  secret: 'supersecret',
+  store: new RedisStore({ client: redisClient }),
+  secret: 'supersecret', // Ganti dengan secret yang lebih aman
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', // Hanya true jika menggunakan HTTPS
+    httpOnly: true, // Melindungi cookie dari akses JavaScript
+    maxAge: 1000 * 60 * 60 * 24 // 1 hari
+  }
 }));
 
 // === Init database ===
