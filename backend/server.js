@@ -31,8 +31,9 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 
+// === Konfigurasi Session ===
 app.use(session({
-  store: new RedisStore({ client: redisClient }), // Gunakan cara yang benar
+  store: new RedisStore({ client: redisClient }), // Gunakan sintaks yang benar
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
