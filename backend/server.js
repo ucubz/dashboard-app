@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const initDB = require('./models/initDB');
-const RedisStore = require('connect-redis').default;
+const RedisStore = require('connect-redis')(session); // Gunakan sebagai fungsi
 const redis = require('redis');
 const app = express();
 
@@ -24,22 +24,21 @@ redisClient.connect().catch((err) => {
 
 // === Middleware global ===
 app.use(cors({
-  // Ganti dengan frontend URL di Vercel setelah deployment
   origin: 'https://dashboard-app-alpha-gules.vercel.app/', // Sesuaikan URL frontend kamu di Vercel
   credentials: true
 }));
 
-app.use(express.json()); // untuk parsing JSON
-app.use(bodyParser.json()); // untuk parsing JSON juga (salah satu cukup, tapi bisa dua juga)
+app.use(express.json());
+app.use(bodyParser.json());
 
 app.use(session({
-  store: new RedisStore({ client: redisClient }),
-  secret: process.env.SESSION_SECRET || 'supersecret', // Ganti dengan secret yang lebih aman
+  store: new RedisStore({ client: redisClient }), // Perbaikan ada di sini
+  secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // Aktifkan hanya jika menggunakan HTTPS
-    httpOnly: true, // Melindungi cookie dari akses JavaScript
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 // 1 hari
   }
 }));
