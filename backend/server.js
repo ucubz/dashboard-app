@@ -14,7 +14,7 @@ require('dotenv').config();
 // === Middleware global ===
 app.use(cors({
   // Ganti dengan frontend URL di Vercel setelah deployment, misalnya:
-  origin: 'https://your-frontend-url.vercel.app',  // Sesuaikan URL frontend kamu di Vercel
+  origin: 'https://dashboard-app-alpha-gules.vercel.app/',  // Sesuaikan URL frontend kamu di Vercel
   credentials: true
 }));
 app.use(express.json()); // untuk parsing JSON
