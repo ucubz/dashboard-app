@@ -53,7 +53,10 @@ initDB();
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
 
-
+// Default route untuk testing
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running!");
+});
 
 app.listen(PORT, () => {
   console.log(`✅ Backend listening on port ${PORT}`);
