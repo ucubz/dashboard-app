@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} /> {/* <- lowercase route */}
+        <Route path="/" element={<Login />} /> {/* <- lowercase route */}
         <Route
           path="/dashboard"
           element={
