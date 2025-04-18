@@ -28,7 +28,7 @@ const InputPengaduan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://your-backend.onrender.com/api/pengaduan', form); // ganti URL dengan backend kamu
+      await axios.post('https://dashboard-app-backend-t4me.onrender.com', form); // ganti URL dengan backend kamu
       alert('Data berhasil dikirim!');
       setForm({ 
         ...form,
