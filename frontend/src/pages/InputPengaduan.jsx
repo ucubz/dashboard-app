@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Sidebar from '../components/Sidebar'; // ✅ Tambahkan sidebar
+import Sidebar from '../components/Sidebar';
 
 const InputPengaduan = () => {
   const [form, setForm] = useState({
@@ -28,17 +28,13 @@ const InputPengaduan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://your-backend.onrender.com/api/pengaduan', form); // ganti URL
+      await axios.post('https://your-backend.onrender.com/api/pengaduan', form); // ganti URL dengan backend kamu
       alert('Data berhasil dikirim!');
       setForm({ 
-        ...form, 
-        nomor_fpp: '', 
-        tahun_fpp: '', 
-        lokasi: '', 
-        terlapor: '', 
-        deskripsi: '', 
-        tim: '', 
-        pelaksana: '' 
+        ...form,
+        nomor_fpp: '', tahun_fpp: '', lokasi: '', periode: '', kategori: 'fraud',
+        terlapor: '', deskripsi: '', tim: '', pelaksana: '',
+        status: 'analisis', persentase: 0, kompleksitas: 1, risiko: 1, skor: 1
       });
     } catch (err) {
       console.error(err);
@@ -46,42 +42,110 @@ const InputPengaduan = () => {
     }
   };
 
+  const fieldStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '10px'
+  };
+
+  const labelStyle = {
+    width: '180px',
+    fontWeight: 'bold'
+  };
+
+  const inputStyle = {
+    flex: 1,
+    padding: '6px'
+  };
+
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
 
-      <div style={{ marginLeft: '220px', padding: '40px', maxWidth: '600px' }}>
+      <div style={{ marginLeft: '220px', padding: '40px', maxWidth: '700px' }}>
         <h2>Form Input Pengaduan</h2>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <input name="nomor_fpp" placeholder="Nomor FPP" value={form.nomor_fpp} onChange={handleChange} required />
-          <input name="tahun_fpp" placeholder="Tahun FPP" value={form.tahun_fpp} onChange={handleChange} required />
-          <input name="lokasi" placeholder="Lokasi" value={form.lokasi} onChange={handleChange} />
-          <input name="periode" placeholder="Periode" value={form.periode} onChange={handleChange} />
+        <form onSubmit={handleSubmit}>
 
-          <select name="kategori" value={form.kategori} onChange={handleChange}>
-            <option value="fraud">Fraud</option>
-            <option value="non-fraud">Non-fraud</option>
-          </select>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Nomor FPP:</label>
+            <input style={inputStyle} name="nomor_fpp" value={form.nomor_fpp} onChange={handleChange} required />
+          </div>
 
-          <input name="terlapor" placeholder="Identitas Terlapor" value={form.terlapor} onChange={handleChange} />
-          <textarea name="deskripsi" placeholder="Deskripsi Singkat" value={form.deskripsi} onChange={handleChange} />
-          <input name="tim" placeholder="Tim Penanggung Jawab" value={form.tim} onChange={handleChange} />
-          <input name="pelaksana" placeholder="Nama Pelaksana" value={form.pelaksana} onChange={handleChange} />
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Tahun FPP:</label>
+            <input style={inputStyle} name="tahun_fpp" value={form.tahun_fpp} onChange={handleChange} required />
+          </div>
 
-          <select name="status" value={form.status} onChange={handleChange}>
-            <option value="analisis">Analisis</option>
-            <option value="pulbaket">Pulbaket</option>
-            <option value="investigasi">Investigasi</option>
-            <option value="selesai">Selesai</option>
-          </select>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Lokasi:</label>
+            <input style={inputStyle} name="lokasi" value={form.lokasi} onChange={handleChange} />
+          </div>
 
-          <input type="number" name="persentase" placeholder="Persentase" value={form.persentase} onChange={handleChange} />
-          <input type="number" name="kompleksitas" placeholder="Kompleksitas" value={form.kompleksitas} onChange={handleChange} />
-          <input type="number" name="risiko" placeholder="Risiko" value={form.risiko} onChange={handleChange} />
-          <input type="number" name="skor" placeholder="Skor" value={form.skor} onChange={handleChange} />
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Periode Dugaan:</label>
+            <input style={inputStyle} name="periode" value={form.periode} onChange={handleChange} />
+          </div>
 
-          <button type="submit">Kirim</button>
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Kategori Pelanggaran:</label>
+            <select style={inputStyle} name="kategori" value={form.kategori} onChange={handleChange}>
+              <option value="fraud">Fraud</option>
+              <option value="non-fraud">Non-fraud</option>
+            </select>
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Identitas Terlapor:</label>
+            <input style={inputStyle} name="terlapor" value={form.terlapor} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Deskripsi Dugaan:</label>
+            <textarea style={{ ...inputStyle, height: '80px' }} name="deskripsi" value={form.deskripsi} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Tim Penanggung Jawab:</label>
+            <input style={inputStyle} name="tim" value={form.tim} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Pelaksana:</label>
+            <input style={inputStyle} name="pelaksana" value={form.pelaksana} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Status Tindak Lanjut:</label>
+            <select style={inputStyle} name="status" value={form.status} onChange={handleChange}>
+              <option value="analisis">Analisis</option>
+              <option value="pulbaket">Pulbaket</option>
+              <option value="investigasi">Investigasi</option>
+              <option value="selesai">Selesai</option>
+            </select>
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Persentase:</label>
+            <input style={inputStyle} type="number" name="persentase" value={form.persentase} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Nilai Kompleksitas:</label>
+            <input style={inputStyle} type="number" name="kompleksitas" value={form.kompleksitas} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Nilai Risiko:</label>
+            <input style={inputStyle} type="number" name="risiko" value={form.risiko} onChange={handleChange} />
+          </div>
+
+          <div style={fieldStyle}>
+            <label style={labelStyle}>Skor Kasus:</label>
+            <input style={inputStyle} type="number" name="skor" value={form.skor} onChange={handleChange} />
+          </div>
+
+          <button type="submit" style={{ marginTop: '20px', padding: '10px 20px' }}>Kirim</button>
         </form>
       </div>
     </div>
