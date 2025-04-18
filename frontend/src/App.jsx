@@ -1,24 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './pages/Login'
-import Dashboard from './pages/dashboard'
-import PrivateRoute from './components/PrivateRoute'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import Dashboard from './Dashboard';
+import RequireAuth from './RequireAuth';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/dashboard"
           element={
-            <PrivateRoute>
+            <RequireAuth>
               <Dashboard />
-            </PrivateRoute>
+            </RequireAuth>
           }
         />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
