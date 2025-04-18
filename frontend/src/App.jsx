@@ -19,7 +19,7 @@ function App() {
         />
         <Route
           path="/input-pengaduan"
-          element={
+          element={<InputPengaduan />
             <RequireAuth>
               <InputPengaduan />
             </RequireAuth>
