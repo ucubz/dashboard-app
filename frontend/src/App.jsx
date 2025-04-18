@@ -1,18 +1,27 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
-import RequireAuth from './RequireAuth'; // <- fix typo
+import InputPengaduan from './pages/InputPengaduan';
+import RequireAuth from './RequireAuth';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} /> {/* <- lowercase route */}
+        <Route path="/" element={<Login />} />
         <Route
           path="/dashboard"
           element={
             <RequireAuth>
               <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/input-pengaduan"
+          element={
+            <RequireAuth>
+              <InputPengaduan />
             </RequireAuth>
           }
         />
