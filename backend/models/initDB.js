@@ -4,7 +4,7 @@ const path = require('path');
 // Lokasi database: backend/database.db
 const dbPath = path.resolve(__dirname, '../database.db');
 console.log('📁 [initDB] Menggunakan database di:', dbPath);
-
+console.log('📁 Database yang digunakan:', dbPath);
 // Function to initialize DB
 function initDB() {
   return new Promise((resolve, reject) => {
