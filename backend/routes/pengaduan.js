@@ -78,14 +78,15 @@ console.log('✅ Data berhasil disimpan ke database.');
 router.get('/', async (req, res) => {
   const db = await initDB();
 
-  try {
-    const pengaduan = await db.all('SELECT * FROM pengaduan');
-    console.log('📦 Data dari tabel pengaduan:', pengaduan);
-    res.json(pengaduan);
-  } catch (err) {
-    console.error('❌ Gagal mengambil data pengaduan:', err.message);
-    res.status(500).json({ error: 'Gagal mengambil data pengaduan' });
-  }
+  db.all('SELECT * FROM pengaduan', (err, rows) => {
+    if (err) {
+      console.error('❌ Gagal mengambil data pengaduan:', err.message);
+      return res.status(500).json({ error: 'Gagal mengambil data pengaduan' });
+    }
+
+    console.log('📦 Data dari tabel pengaduan:', rows);
+    res.json(rows); // ← pastikan langsung array
+  });
 });
 
 // ===========================
