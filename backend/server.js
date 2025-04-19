@@ -52,7 +52,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
 
 app.get('/download-db', (req, res) => {
-  const dbPath = path.join(__dirname, '../database.db'); // atau dashboard.db kalau itu yang kamu pakai
+  const dbPath = path.join(__dirname, '../backend/database.db'); // atau dashboard.db kalau itu yang kamu pakai
 
   // Cek apakah file ada
   if (fs.existsSync(dbPath)) {
