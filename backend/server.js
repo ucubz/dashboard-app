@@ -7,6 +7,7 @@ const initDB = require('./models/initDB');
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const app = express();
+const router = require("./routes/pengaduan"); // contoh
 
 require('dotenv').config();
 
@@ -44,6 +45,9 @@ app.use(session({
 
 // === Init DB ===
 initDB();
+
+app.use(express.json());
+app.use(router); // ini wajib untuk mengaktifkan route
 
 // === Routes ===
 app.use('/api/auth', require('./routes/auth'));
