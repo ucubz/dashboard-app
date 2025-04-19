@@ -9,18 +9,18 @@ const db = await initDB();
 const {
   nomor_fpp,
   tahun_fpp,
-  lokasi,
-  periode,
-  kategori,
-  terlapor,
-  deskripsi,
-  tim,
-  pelaksana,
-  status,
-  persentase,
-  kompleksitas,
-  risiko,
-  skor
+  lokasi_pelanggaran,
+  periode_pelanggaran,
+  kategori_pelanggaran,
+  identitas_terlapor,
+  deskripsi_singkat,
+  tim_penanggung_jawab,
+  pegawai_penanggung_jawab,
+  status_tindak_lanjut,
+  persentase_tindak_lanjut,
+  nilai_kompleksitas,
+  nilai_risiko,
+  skor_kasus
 } = req.body;
 
   console.log('Data yang dikirim:', req.body);
@@ -28,14 +28,14 @@ const {
   try {
     await db.run(
       `INSERT INTO pengaduan (
-        nomor_fpp, tahun_fpp, lokasi, periode, kategori,
-        terlapor, deskripsi, tim, pelaksana, status,
-        persentase, kompleksitas, risiko, skor
+        nomor_fpp, tahun_fpp, lokasi_pelanggaran, periode_pelanggaran, kategori_pelanggaran,
+        identitas_terlapor, deskripsi_singkat, tim_penanggung_jawab, pegawai_penanggung_jawab, status_tindak_lanjut,
+        persentase_tindak_lanjut, nilai_kompleksitas, nilai_risiko, skor_kasus
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        nomor_fpp, tahun_fpp, lokasi, periode, kategori,
-        terlapor, deskripsi, tim, pelaksana, status,
-        persentase, kompleksitas, risiko, skor
+        nomor_fpp, tahun_fpp, lokasi_pelanggaran, periode_pelanggaran, kategori_pelanggaran,
+        identitas_terlapor, deskripsi_singkat, tim_penanggung_jawab, pegawai_penanggung_jawab, status_tindak_lanjut,
+        persentase_tindak_lanjut, nilai_kompleksitas, nilai_risiko, skor_kasus
       ]
     );
 
