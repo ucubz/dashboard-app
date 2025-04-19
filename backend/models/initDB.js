@@ -1,7 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
+// Lokasi database: backend/database.db
 const dbPath = path.resolve(__dirname, '../database.db');
+console.log('📁 [initDB] Menggunakan database di:', dbPath);
 
 // Function to initialize DB
 function initDB() {
@@ -42,7 +44,8 @@ function initDB() {
               skor_kasus INTEGER
             )
           `);
-          resolve(db); // Resolve with the db object
+
+          resolve(db);
         });
       }
     });

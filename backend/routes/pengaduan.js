@@ -86,4 +86,8 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/debug', async (req, res) => {
+  res.json({ message: '🔍 Route /api/pengaduan aktif' });
+});
+
 module.exports = router;
