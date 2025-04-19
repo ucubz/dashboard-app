@@ -93,13 +93,19 @@ router.get('/debug', async (req, res) => {
   const db = await initDB();
 
   try {
-    const pengaduan = await db.all('SELECT * FROM pengaduan');
-    res.json({
-      total_data: pengaduan.length,
-      contoh_data: pengaduan.slice(0, 2)
+    db.all('SELECT * FROM pengaduan', (err, rows) => {
+      if (err) {
+        console.error('❌ Debug gagal:', err.message);
+        return res.status(500).json({ error: 'Gagal ambil debug data' });
+      }
+
+      res.json({
+        total_data: rows.length,
+        contoh_data: rows.slice(0, 2)
+      });
     });
   } catch (err) {
-    console.error('❌ Debug gagal:', err.message);
+    console.error('❌ Debug gagal:', err);
     res.status(500).json({ error: 'Gagal ambil debug data' });
   }
 });
