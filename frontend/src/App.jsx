@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
-impoimport DaftarPengaduan from './pages/DaftarPengaduan';
+import DaftarPengaduan from './pages/DaftarPengaduan';
 
 
 function App() {
