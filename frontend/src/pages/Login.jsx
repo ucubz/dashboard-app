@@ -25,37 +25,39 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-console.log("Login ke URL:", import.meta.env.VITE_API_URL);
-
-const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-  username,
-  password
-});
-
+  
     try {
+      alert("📡 Mengirim permintaan login...");
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         username,
         password
       });
-
+  
       const { token, user } = res.data;
-
+  
+      alert(`✅ Login berhasil. Role: ${user.role}`);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-
-      // Redirect sesuai role
+  
+      // Tambahkan alert sebelum redirect
       if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
+        alert("➡️ Redirect ke /dashboard");
         navigate('/dashboard');
       } else if (user.role === 'petugas_dashboard') {
+        alert("➡️ Redirect ke /input-pengaduan");
         navigate('/input-pengaduan');
       } else {
+        alert("⛔ Tidak dikenali, kembali ke halaman login");
         navigate('/');
       }
+  
     } catch (err) {
       console.error(err);
+      alert("❌ Login gagal. Username/password salah atau backend error.");
       setError('Login gagal. Cek kembali username/password atau hubungi admin.');
     }
   };
+  
 
   localStorage.setItem('token', token);
   localStorage.setItem('user', JSON.stringify(user));
