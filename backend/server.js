@@ -8,6 +8,9 @@ const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const app = express();
 
+const path = require('path');
+const fs = require('fs');
+
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
@@ -47,6 +50,22 @@ initDB();
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
+
+app.get('/download-db', (req, res) => {
+  const dbPath = path.join(__dirname, '../database.db'); // atau dashboard.db kalau itu yang kamu pakai
+
+  // Cek apakah file ada
+  if (fs.existsSync(dbPath)) {
+    res.download(dbPath, 'database.db', (err) => {
+      if (err) {
+        console.error('❌ Gagal mengunduh file:', err.message);
+        res.status(500).send('Gagal mengunduh file');
+      }
+    });
+  } else {
+    res.status(404).send('Database tidak ditemukan');
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running!");
