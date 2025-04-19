@@ -6,7 +6,7 @@ const DaftarPengaduan = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('https://your-backend.onrender.com/api/pengaduan') // Ganti dengan URL backend kamu
+    axios.get('https://dashboard-app-backend-t4me.onrender.com/api/pengaduan') // Ganti dengan URL backend kamu
       .then(res => setData(res.data))
       .catch(err => console.error(err));
   }, []);
