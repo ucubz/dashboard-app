@@ -3,11 +3,10 @@ const router = express.Router();
 const initDB = require('../models/initDB');
 
 // POST - Simpan data pengaduan
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   console.log('Request body:', req.body); // Debugging
-  if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body request kosong atau tidak valid' });
-  }
+  res.status(201).json({ message: 'Data berhasil diterima', data: req.body });
+});
 
   const db = await initDB();
   const {
