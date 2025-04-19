@@ -12,12 +12,8 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
-const pengaduanRoutes = require('./routes/pengaduan');
-app.use('/api/pengaduan', pengaduanRoutes);
-
 // === Redis Client ===
 const redisClient = redis.createClient({
-
   url: process.env.REDIS_URL || 'redis://localhost:6379',
   legacyMode: true
 });
@@ -27,37 +23,32 @@ redisClient.connect().catch((err) => {
 
 // === Middleware ===
 app.use(cors({
-
   origin: 'https://dashboard-app-alpha-gules.vercel.app',
   credentials: true
 }));
 app.use(express.json());
 app.use(bodyParser.json());
 
-
 // === Session Config ===
-
 app.use(session({
   store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET || 'supersecret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // true kalau production
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 // 1 hari
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
 // === Init DB ===
 initDB();
 
-
 // === Routes ===
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
 
-// Default route untuk testing
 app.get("/", (req, res) => {
   res.send("🚀 Backend is running!");
 });
