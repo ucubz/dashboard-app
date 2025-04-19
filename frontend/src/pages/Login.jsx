@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,21 +8,36 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Jika sudah login dan ada token, redirect otomatis
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (token && user) {
+      if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
+        navigate('/dashboard');
+      } else if (user.role === 'petugas_dashboard') {
+        navigate('/input-pengaduan');
+      }
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     try {
-      alert("Mengirim data login...");
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         username,
         password
       });
 
       const { token, user } = res.data;
-      alert(`Login berhasil. Role: ${user.role}`);
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
+      // Redirect sesuai role
       if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
         navigate('/dashboard');
       } else if (user.role === 'petugas_dashboard') {
@@ -32,14 +47,13 @@ const Login = () => {
       }
     } catch (err) {
       console.error(err);
-      alert("Login gagal. Username/password salah atau backend error.");
-      setError('Login gagal. Cek kembali username/password.');
+      setError('Login gagal. Cek kembali username/password atau hubungi admin.');
     }
   };
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>Login Dong</h1>
+      <h1>Login Aplikasi</h1>
       <form onSubmit={handleSubmit} style={{ maxWidth: 300 }}>
         <div>
           <label>Username:</label><br />
