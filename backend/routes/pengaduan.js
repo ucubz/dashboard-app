@@ -78,16 +78,12 @@ router.get('/', async (req, res) => {
 
   try {
     const pengaduan = await db.all('SELECT * FROM pengaduan');
-    console.log('📦 Data dari tabel pengaduan:', pengaduan);
-    res.json(pengaduan);
+    console.log('📦 Data dari tabel pengaduan:', pengaduan); // ✅ Log hasil array
+    res.json(pengaduan); // ✅ Kirim array langsung
   } catch (err) {
     console.error('❌ Gagal mengambil data pengaduan:', err.message);
     res.status(500).json({ error: 'Gagal mengambil data pengaduan' });
   }
-});
-
-router.get('/debug', async (req, res) => {
-  res.json({ message: '🔍 Route /api/pengaduan aktif' });
 });
 
 module.exports = router;
