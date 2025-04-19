@@ -78,11 +78,29 @@ router.get('/', async (req, res) => {
 
   try {
     const pengaduan = await db.all('SELECT * FROM pengaduan');
-    console.log('📦 Data dari tabel pengaduan:', pengaduan); // ✅ Log hasil array
-    res.json(pengaduan); // ✅ Kirim array langsung
+    console.log('📦 Data dari tabel pengaduan:', pengaduan);
+    res.json(pengaduan);
   } catch (err) {
     console.error('❌ Gagal mengambil data pengaduan:', err.message);
     res.status(500).json({ error: 'Gagal mengambil data pengaduan' });
+  }
+});
+
+// ===========================
+// GET - Debug: Cek jumlah dan contoh data
+// ===========================
+router.get('/debug', async (req, res) => {
+  const db = await initDB();
+
+  try {
+    const pengaduan = await db.all('SELECT * FROM pengaduan');
+    res.json({
+      total_data: pengaduan.length,
+      contoh_data: pengaduan.slice(0, 2)
+    });
+  } catch (err) {
+    console.error('❌ Debug gagal:', err.message);
+    res.status(500).json({ error: 'Gagal ambil debug data' });
   }
 });
 
