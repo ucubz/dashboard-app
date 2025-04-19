@@ -63,6 +63,8 @@ router.post('/', async (req, res) => {
       ]
     );
 
+console.log('✅ Data berhasil disimpan ke database.');
+
     res.status(201).json({ message: 'Data pengaduan berhasil disimpan' });
   } catch (err) {
     console.error('❌ Gagal menyimpan data pengaduan:', err.message);
