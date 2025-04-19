@@ -1,4 +1,4 @@
-// RequireAuth.jsx
+// src/RequireAuth.jsx
 import { Navigate } from 'react-router-dom';
 
 const RequireAuth = ({ children, allowedRoles }) => {
