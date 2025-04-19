@@ -12,6 +12,9 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
+const pengaduanRoutes = require('./routes/pengaduan');
+app.use('/api/pengaduan', pengaduanRoutes);
+
 // === Redis Client ===
 const redisClient = redis.createClient({
 
@@ -48,6 +51,7 @@ app.use(session({
 
 // === Init DB ===
 initDB();
+
 
 // === Routes ===
 app.use('/api/auth', require('./routes/auth'));

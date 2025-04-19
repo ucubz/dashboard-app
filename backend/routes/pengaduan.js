@@ -1,45 +1,45 @@
-// backend/routes/pengaduan.js
 const express = require('express');
 const router = express.Router();
-const { db } = require('../models/initDB');
+const { initDB } = require('../models/initDB');
 
-// Ambil semua pengaduan
-router.get('/', (req, res) => {
-  db.all('SELECT * FROM pengaduan', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-// Tambah pengaduan
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  const db = await initDB();
   const {
-    nomor_fpp, tahun_fpp, lokasi_pelanggaran, periode_pelanggaran,
-    kategori_pelanggaran, identitas_terlapor, deskripsi_singkat,
-    tim_penanggung_jawab, pegawai_penanggung_jawab, status_tindak_lanjut,
-    persentase_tindak_lanjut, nilai_kompleksitas, nilai_risiko, skor_kasus
+    nomor_fpp,
+    tahun_fpp,
+    lokasi,
+    periode,
+    kategori,
+    terlapor,
+    deskripsi,
+    tim,
+    pelaksana,
+    status,
+    persentase,
+    kompleksitas,
+    risiko,
+    skor
   } = req.body;
 
-  const sql = `
-    INSERT INTO pengaduan (
-      nomor_fpp, tahun_fpp, lokasi_pelanggaran, periode_pelanggaran,
-      kategori_pelanggaran, identitas_terlapor, deskripsi_singkat,
-      tim_penanggung_jawab, pegawai_penanggung_jawab, status_tindak_lanjut,
-      persentase_tindak_lanjut, nilai_kompleksitas, nilai_risiko, skor_kasus
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  try {
+    await db.run(
+      `INSERT INTO pengaduan (
+        nomor_fpp, tahun_fpp, lokasi, periode, kategori,
+        terlapor, deskripsi, tim, pelaksana, status,
+        persentase, kompleksitas, risiko, skor
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        nomor_fpp, tahun_fpp, lokasi, periode, kategori,
+        terlapor, deskripsi, tim, pelaksana, status,
+        persentase, kompleksitas, risiko, skor
+      ]
+    );
 
-  const values = [
-    nomor_fpp, tahun_fpp, lokasi_pelanggaran, periode_pelanggaran,
-    kategori_pelanggaran, identitas_terlapor, deskripsi_singkat,
-    tim_penanggung_jawab, pegawai_penanggung_jawab, status_tindak_lanjut,
-    persentase_tindak_lanjut, nilai_kompleksitas, nilai_risiko, skor_kasus
-  ];
-
-  db.run(sql, values, function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ id: this.lastID });
-  });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Gagal menyimpan data pengaduan' });
+  }
 });
 
 module.exports = router;
