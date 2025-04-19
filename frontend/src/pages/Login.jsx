@@ -8,7 +8,6 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Jika sudah login dan ada token, redirect otomatis
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
@@ -25,21 +24,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-  
+
     try {
       alert("📡 Mengirim permintaan login...");
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         username,
         password
       });
-  
+
       const { token, user } = res.data;
-  
+
       alert(`✅ Login berhasil. Role: ${user.role}`);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-  
-      // Tambahkan alert sebelum redirect
+      console.log("Token disimpan:", token);
+      console.log("User disimpan:", user);
+
       if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
         alert("➡️ Redirect ke /dashboard");
         navigate('/dashboard');
@@ -50,20 +50,13 @@ const Login = () => {
         alert("⛔ Tidak dikenali, kembali ke halaman login");
         navigate('/');
       }
-  
+
     } catch (err) {
       console.error(err);
       alert("❌ Login gagal. Username/password salah atau backend error.");
       setError('Login gagal. Cek kembali username/password atau hubungi admin.');
     }
   };
-  
-
-  localStorage.setItem('token', token);
-  localStorage.setItem('user', JSON.stringify(user));
-  console.log("Token disimpan:", token);
-  console.log("User disimpan:", user);
-  
 
   return (
     <div style={{ padding: 40 }}>
