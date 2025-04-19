@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import RequireAuth from './components/RequireAuth'; // ✅ ini yang kurang
+import RequireAuth from './RequireAuth'; // ✅ ini yang kurang
 
 function App() {
   return (
