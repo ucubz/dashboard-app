@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; import Login from "./pages/Login"; import Dashboard from './pages/dashboard'; import InputPengaduan from './pages/InputPengaduan'; import DaftarPengaduan from './pages/DaftarPengaduan'; import RequireAuth from './components/RequireAuth';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; import Login from "./pages/Login"; import Dashboard from './pages/dashboard'; import InputPengaduan from './pages/InputPengaduan'; import DaftarPengaduan from './pages/DaftarPengaduan'; import RequireAuth from './RequireAuth';
 
 function App() { return ( <Router> <Routes> <Route path="/" element={<Login />} />
 
