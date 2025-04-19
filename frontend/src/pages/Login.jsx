@@ -35,6 +35,7 @@ const Login = () => {
       const { token, user } = res.data;
 
       alert(`✅ Login berhasil. Role: ${user.role}`);
+console.log("User object dari backend:",user);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       console.log("Token disimpan:", token);
