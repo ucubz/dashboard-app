@@ -19,11 +19,11 @@ function App() {
         />
         <Route
           path="/input-pengaduan"
-          element={<InputPengaduan />
+          element={
             <RequireAuth>
               <InputPengaduan />
             </RequireAuth>
-          }
+          } // Tambahkan tanda kurung tutup di sini
         />
       </Routes>
     </Router>

@@ -3,28 +3,25 @@ const router = express.Router();
 const initDB = require('../models/initDB');
 
 // POST - Simpan data pengaduan
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   console.log('Request body:', req.body); // Debugging
-  res.status(201).json({ message: 'Data berhasil diterima', data: req.body });
-});
-
-  const db = await initDB();
-  const {
-    nomor_fpp,
-    tahun_fpp,
-    lokasi,
-    periode,
-    kategori,
-    terlapor,
-    deskripsi,
-    tim,
-    pelaksana,
-    status,
-    persentase,
-    kompleksitas,
-    risiko,
-    skor
-  } = req.body;
+const db = await initDB();
+const {
+  nomor_fpp,
+  tahun_fpp,
+  lokasi,
+  periode,
+  kategori,
+  terlapor,
+  deskripsi,
+  tim,
+  pelaksana,
+  status,
+  persentase,
+  kompleksitas,
+  risiko,
+  skor
+} = req.body;
 
   console.log('Data yang dikirim:', req.body);
 
