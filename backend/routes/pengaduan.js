@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { initDB } = require('../models/initDB');
+const initDB = require('../models/initDB');
 
 // POST - Simpan data pengaduan
 router.post('/', async (req, res) => {
