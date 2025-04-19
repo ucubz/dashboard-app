@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { initDB } = require('../models/initDB');
 
+// POST - Simpan data pengaduan
 router.post('/', async (req, res) => {
   const db = await initDB();
   const {
@@ -39,6 +40,19 @@ router.post('/', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Gagal menyimpan data pengaduan' });
+  }
+});
+
+// GET - Ambil semua data pengaduan
+router.get('/', async (req, res) => {
+  const db = await initDB();
+
+  try {
+    const pengaduan = await db.all('SELECT * FROM pengaduan');
+    res.json(pengaduan);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Gagal mengambil data pengaduan' });
   }
 });
 
