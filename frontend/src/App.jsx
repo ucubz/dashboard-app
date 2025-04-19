@@ -1,43 +1,48 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; import Login from "./pages/Login"; import Dashboard from './pages/dashboard'; import InputPengaduan from './pages/InputPengaduan'; import DaftarPengaduan from './pages/DaftarPengaduan'; import RequireAuth from './RequireAuth';
+// App.jsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/dashboard';
+import InputPengaduan from './pages/InputPengaduan';
+import DaftarPengaduan from './pages/DaftarPengaduan';
+import RequireAuth from './RequireAuth'; // karena di root
 
-function App() { return ( <Router> <Routes> <Route path="/" element={<Login />} />
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-<Route
-      path="/dashboard"
-      element={
-        <RequireAuth allowedRoles={['kepala_subdir', 'kepala_seksi']}>
-          <Dashboard />
-        </RequireAuth>
-      }
-    />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth allowedRoles={['kepala_subdir', 'kepala_seksi']}>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
 
-    <Route
-      path="/input-pengaduan"
-      element={
-        <RequireAuth allowedRoles={['petugas_dashboard']}>
-          <InputPengaduan />
-        </RequireAuth>
-      }
-    />
+        <Route
+          path="/input-pengaduan"
+          element={
+            <RequireAuth allowedRoles={['petugas_dashboard']}>
+              <InputPengaduan />
+            </RequireAuth>
+          }
+        />
 
-    <Route
-      path="/daftar-pengaduan"
-      element={
-        <RequireAuth allowedRoles={['kepala_subdir', 'kepala_seksi']}>
-          <DaftarPengaduan />
-        </RequireAuth>
-      }
-    />
+        <Route
+          path="/daftar-pengaduan"
+          element={
+            <RequireAuth allowedRoles={['kepala_subdir', 'kepala_seksi']}>
+              <DaftarPengaduan />
+            </RequireAuth>
+          }
+        />
 
-    {/* Fallback route for undefined paths */}
-    <Route
-      path="*"
-      element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
-    />
-  </Routes>
-</Router>
-
-); }
+        <Route path="*" element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>} />
+      </Routes>
+    </Router>
+  );
+}
 
 export default App;
-
