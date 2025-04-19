@@ -3,29 +3,26 @@ import { Navigate } from 'react-router-dom';
 
 const RequireAuth = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
-  const userString = localStorage.getItem('user');
+  const user = JSON.parse(localStorage.getItem('user'));
 
-  let user = null;
-  try {
-    user = JSON.parse(userString);
-  } catch (err) {
-    console.error('Gagal parsing user dari localStorage:', err);
-  }
-
-  console.log('===[DEBUG RequireAuth]===');
-  console.log('Token:', token);
-  console.log('User:', user);
-  console.log('Allowed roles:', allowedRoles);
+  console.log('💾 token:', token);
+  console.log('👤 user:', user);
+  console.log('🔐 allowedRoles:', allowedRoles);
 
   if (!token || !user) {
-    console.warn('User tidak login. Redirect ke halaman login.');
+    console.log('🚫 Belum login. Redirect ke "/"');
     return <Navigate to="/" replace />;
   }
 
   if (!allowedRoles.includes(user.role)) {
-    console.warn('Role tidak diizinkan:', user.role);
+    console.log('🚫 Role tidak diizinkan:', user.role);
     return <Navigate to="/" replace />;
   }
+
+  console.log('✅ Akses diizinkan. Render halaman.');
+  return children;
+};
+
 
   return children;
 };

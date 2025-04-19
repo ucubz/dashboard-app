@@ -57,6 +57,12 @@ const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
     }
   };
 
+  localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify(user));
+  console.log("Token disimpan:", token);
+  console.log("User disimpan:", user);
+  
+
   return (
     <div style={{ padding: 40 }}>
       <h1>Login Aplikasi</h1>

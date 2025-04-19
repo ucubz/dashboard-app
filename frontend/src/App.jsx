@@ -1,16 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
+import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import RequireAuth from './RequireAuth'; // bukan './components/RequireAuth'
+import RequireAuth from './RequireAuth'; // <- lokasi benar?
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-
         <Route
           path="/dashboard"
           element={
@@ -19,7 +18,6 @@ function App() {
             </RequireAuth>
           }
         />
-
         <Route
           path="/input-pengaduan"
           element={
@@ -28,7 +26,6 @@ function App() {
             </RequireAuth>
           }
         />
-
         <Route
           path="/daftar-pengaduan"
           element={
@@ -36,11 +33,6 @@ function App() {
               <DaftarPengaduan />
             </RequireAuth>
           }
-        />
-
-        <Route
-          path="*"
-          element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
         />
       </Routes>
     </Router>
