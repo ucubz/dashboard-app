@@ -4,6 +4,11 @@ const initDB = require('../models/initDB');
 
 // POST - Simpan data pengaduan
 router.post('/', async (req, res) => {
+  console.log('Request body:', req.body); // Debugging
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Body request kosong atau tidak valid' });
+  }
+
   const db = await initDB();
   const {
     nomor_fpp,
@@ -22,6 +27,8 @@ router.post('/', async (req, res) => {
     skor
   } = req.body;
 
+  console.log('Data yang dikirim:', req.body);
+
   try {
     await db.run(
       `INSERT INTO pengaduan (
@@ -36,9 +43,10 @@ router.post('/', async (req, res) => {
       ]
     );
 
-    res.json({ success: true });
+    res.status(201).json({ message: 'Data berhasil diterima', data: req.body });
   } catch (err) {
-    console.error(err);
+    console.error('Error response:', err.response?.data || err.message);
+    alert('Gagal mengirim data');
     res.status(500).json({ error: 'Gagal menyimpan data pengaduan' });
   }
 });
