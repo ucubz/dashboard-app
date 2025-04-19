@@ -16,6 +16,7 @@ const Sidebar = () => {
       <ul style={{ listStyle: 'none', padding: 0 }}>
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/input-pengaduan">Input Pengaduan</Link></li>
+        <li><Link to="/daftar-pengaduan">Daftar Pengaduan</Link></li>
         <li><Link to="/login">Logout</Link></li>
       </ul>
     </div>

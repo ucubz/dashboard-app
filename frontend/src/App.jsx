@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
-import RequireAuth from './RequireAuth';
+impoimport DaftarPengaduan from './pages/DaftarPengaduan';
+
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
               <InputPengaduan />
             </RequireAuth>
           } // Tambahkan tanda kurung tutup di sini
+        />
+        <Route
+          path="/daftar-pengaduan"
+          element={
+            <RequireAuth>
+              <DaftarPengaduan />
+            </RequireAuth>
+          }
         />
       </Routes>
     </Router>
