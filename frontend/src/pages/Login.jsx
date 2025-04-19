@@ -8,15 +8,22 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Redirect otomatis jika sudah login
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (token && user) {
-      if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
-        navigate('/dashboard');
-      } else if (user.role === 'petugas_dashboard') {
-        navigate('/input-pengaduan');
+      switch (user.role) {
+        case 'kepala_subdir':
+        case 'kepala_seksi':
+          navigate('/dashboard');
+          break;
+        case 'petugas_dashboard':
+          navigate('/input-pengaduan');
+          break;
+        default:
+          navigate('/');
       }
     }
   }, []);
@@ -26,30 +33,31 @@ const Login = () => {
     setError('');
 
     try {
-      alert("📡 Mengirim permintaan login...");
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         username,
         password
       });
 
       const { token, user } = res.data;
-
+      console.log("User object dari backend:", user);
       alert(`✅ Login berhasil. Role: ${user.role}`);
-console.log("User object dari backend:",user);
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      console.log("Token disimpan:", token);
-      console.log("User disimpan:", user);
 
-      if (user.role === 'kepala_subdir' || user.role === 'kepala_seksi') {
-        alert("➡️ Redirect ke /dashboard");
-        navigate('/dashboard');
-      } else if (user.role === 'petugas_dashboard') {
-        alert("➡️ Redirect ke /input-pengaduan");
-        navigate('/input-pengaduan');
-      } else {
-        alert("⛔ Tidak dikenali, kembali ke halaman login");
-        navigate('/');
+      switch (user.role) {
+        case 'kepala_subdir':
+        case 'kepala_seksi':
+          alert("➡️ Redirect ke /dashboard");
+          navigate('/dashboard');
+          break;
+        case 'petugas_dashboard':
+          alert("➡️ Redirect ke /input-pengaduan");
+          navigate('/input-pengaduan');
+          break;
+        default:
+          alert(`⛔ Role tidak dikenali: ${user.role}`);
+          navigate('/');
       }
 
     } catch (err) {
