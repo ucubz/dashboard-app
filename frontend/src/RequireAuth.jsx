@@ -1,11 +1,21 @@
-// frontend/src/RequireAuth.jsx
+// components/RequireAuth.jsx
 import { Navigate } from 'react-router-dom';
 
-const RequireAuth = ({ children }) => {
+const RequireAuth = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  // Jika tidak login, redirect ke halaman login
+  if (!token || !user) {
+    return <Navigate to="/" replace />;
   }
+
+  // Jika role tidak sesuai, redirect ke halaman default (bisa disesuaikan)
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Jika semua cocok, render children (halaman yang diminta)
   return children;
 };
 
