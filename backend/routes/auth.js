@@ -27,9 +27,9 @@ router.post('/login', async (req, res) => {
     // Compare the entered password with the stored password
     console.log('User object:', user);
 console.log('Password from body:', password);
-console.log('Password from DB:', user.password);
+console.log('Password from DB:', user.password_hash);
 
-	const isMatch = await bcrypt.compare(password, user.password);
+	const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({ message: 'Password salah' });
     }
