@@ -28,6 +28,12 @@ function App() { return ( <Router> <Routes> <Route path="/" element={<Login />} 
         </RequireAuth>
       }
     />
+
+    {/* Fallback route for undefined paths */}
+    <Route
+      path="*"
+      element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
+    />
   </Routes>
 </Router>
 
