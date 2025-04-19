@@ -1,10 +1,9 @@
-// App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import RequireAuth from './RequireAuth'; // karena di root
+import RequireAuth from './RequireAuth'; // bukan './components/RequireAuth'
 
 function App() {
   return (
@@ -39,7 +38,10 @@ function App() {
           }
         />
 
-        <Route path="*" element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>} />
+        <Route
+          path="*"
+          element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
+        />
       </Routes>
     </Router>
   );
