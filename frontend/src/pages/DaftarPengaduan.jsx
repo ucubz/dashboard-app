@@ -6,9 +6,15 @@ const DaftarPengaduan = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('https://dashboard-app-backend-t4me.onrender.com/api/pengaduan') // Ganti dengan URL backend kamu
-      .then(res => setData(res.data))
-      .catch(err => console.error(err));
+    axios.get('https://dashboard-app-backend-t4me.onrender.com/api/pengaduan')
+      .then(res => {
+        console.log("RESPON DARI BACKEND:", res.data);
+        setData(res.data);
+      })
+      .catch(err => {
+        console.error("Gagal ambil data:", err);
+        setData([]); // fallback agar tidak error
+      });
   }, []);
 
   return (
@@ -28,17 +34,23 @@ const DaftarPengaduan = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, idx) => (
-              <tr key={idx}>
-                <td>{item.nomor_fpp}</td>
-                <td>{item.tahun_fpp}</td>
-                <td>{item.lokasi}</td>
-                <td>{item.kategori}</td>
-                <td>{item.status}</td>
-                <td>{item.skor}</td>
-              </tr>
-            ))}
-          </tbody>
+  {Array.isArray(data) && data.length > 0 ? (
+    data.map((item, idx) => (
+      <tr key={idx}>
+        <td>{item.nomor_fpp}</td>
+        <td>{item.tahun_fpp}</td>
+        <td>{item.lokasi_pelanggaran}</td>
+        <td>{item.kategori_pelanggaran}</td>
+        <td>{item.status_tindak_lanjut}</td>
+        <td>{item.skor_kasus}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="6">Tidak ada data</td>
+    </tr>
+  )}
+</tbody>
         </table>
       </div>
     </div>
