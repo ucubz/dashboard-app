@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const initPegawaiDB = require('../models/pegawaiDB');
+const initPegawaiDB = require('../models/PegawaiDB');
 
 // GET - Ambil semua data pegawai
 router.get('/', async (req, res) => {
