@@ -1,7 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-// Lokasi database
 const dbPath = path.resolve(__dirname, '../database.db');
 console.log('📁 [initDB] Menggunakan database di:', dbPath);
 
@@ -54,10 +53,54 @@ function initDB() {
               nip TEXT,
               user TEXT UNIQUE,
               tim TEXT,
-              role_di_tim TEXT CHECK(role_di_tim IN ('Ketua Tim', 'Anggota Tim')),
-              seksi TEXT CHECK(seksi IN ('II 1', 'II 2'))
+              role_di_tim TEXT,
+              seksi TEXT
             )
           `);
+
+          // Cek apakah sudah ada user
+          db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
+            if (row.count === 0) {
+              const bcrypt = require('bcrypt');
+              const saltRounds = 10;
+
+              const users = [
+                { nama: 'Admin', username: 'admin', password: 'admin123', role: 'kepala_subdir', seksi: 'II 1', tim: 'Tim 1' },
+                { nama: 'Sekretaris', username: 'sekretaris', password: 'sekretaris123', role: 'kepala_seksi', seksi: 'II 2', tim: 'Tim 2' },
+                { nama: 'Petugas', username: 'petugas', password: 'petugas123', role: 'petugas_dashboard', seksi: 'II 1', tim: 'Tim 3' },
+              ];
+
+              users.forEach(user => {
+                const hash = bcrypt.hashSync(user.password, saltRounds);
+                db.run(
+                  `INSERT INTO users (nama, username, password_hash, role, seksi, tim) VALUES (?, ?, ?, ?, ?, ?)`,
+                  [user.nama, user.username, hash, user.role, user.seksi, user.tim]
+                );
+              });
+
+              console.log('✅ Data awal users ditambahkan.');
+            }
+          });
+
+          // Cek apakah sudah ada pegawai
+          db.get("SELECT COUNT(*) as count FROM pegawai", (err, row) => {
+            if (row.count === 0) {
+              const pegawaiList = [
+                { pic: 'Andi', nip: '197801012005011001', user: '05011001', tim: 'Tim 1', role_di_tim: 'Ketua Tim', seksi: 'II 1' },
+                { pic: 'Budi', nip: '198001022006021002', user: '06021002', tim: 'Tim 1', role_di_tim: 'Anggota Tim', seksi: 'II 1' },
+                { pic: 'Citra', nip: '198502152010032003', user: '10032003', tim: 'Tim 2', role_di_tim: 'Ketua Tim', seksi: 'II 2' },
+              ];
+
+              pegawaiList.forEach(p => {
+                db.run(
+                  `INSERT INTO pegawai (pic, nip, user, tim, role_di_tim, seksi) VALUES (?, ?, ?, ?, ?, ?)`,
+                  [p.pic, p.nip, p.user, p.tim, p.role_di_tim, p.seksi]
+                );
+              });
+
+              console.log('✅ Data awal pegawai ditambahkan.');
+            }
+          });
 
           resolve(db);
         });
