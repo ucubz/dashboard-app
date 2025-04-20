@@ -9,6 +9,10 @@ const redis = require('redis');
 const path = require('path');
 const fs = require('fs');
 const app = express();
+const pegawaiRoutes = require('./routes/pegawai');
+
+
+
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +55,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
 app.use('/api/pegawai', require('./routes/pegawai'));
 app.use('/api/pegawai', require('./routes/pegawai'));
+app.use('/api/pegawai', pegawaiRoutes);
 
 // Route download database
 app.get('/download-db', (req, res) => {
