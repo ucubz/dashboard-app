@@ -49,6 +49,7 @@ initDB();
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pengaduan', require('./routes/pengaduan'));
+app.use('/api/pegawai', require('./routes/pegawai'));
 
 // Route download database
 app.get('/download-db', (req, res) => {
