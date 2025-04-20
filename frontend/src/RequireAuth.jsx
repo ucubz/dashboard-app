@@ -1,17 +1,17 @@
-// RequireAuth.jsx
 import { Navigate } from 'react-router-dom';
 
 const RequireAuth = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // Jika belum login
   if (!token || !user) {
     return <Navigate to="/" replace />;
   }
 
-  // Jika role tidak diizinkan
-  if (!allowedRoles.includes(user.role)) {
+  const userRole = user.role?.toLowerCase().replace(/\s/g, '_');
+
+  if (!allowedRoles.includes(userRole)) {
+    console.warn('⛔ Akses ditolak untuk role:', user.role);
     return <Navigate to="/" replace />;
   }
 
