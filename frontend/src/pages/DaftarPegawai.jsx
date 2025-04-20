@@ -13,21 +13,24 @@ const DaftarPegawai = () => {
   const [selectedTim, setSelectedTim] = useState('');
   const [selectedNama, setSelectedNama] = useState('');
 
+  // Ambil data pegawai saat awal
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/pegawai`)
-      .then(res => setPegawai(res.data))
-      .catch(err => console.error('Gagal ambil data pegawai:', err));
+    axios.get(`${import.meta.env.VITE_API_URL}/api/pegawai`)
+      .then(res => {
+        console.log('✅ Data pegawai:', res.data);
+        setPegawai(res.data);
+      })
+      .catch(err => {
+        console.error('❌ Gagal ambil data pegawai:', err);
+        alert('Gagal ambil data pegawai');
+      });
   }, []);
 
+  // Update tim berdasarkan seksi
   useEffect(() => {
-    const timUnik = [
-      ...new Set(
-        pegawai
-          .filter(p => p.seksi === selectedSeksi)
-          .map(p => p.tim)
-      ),
-    ];
+    const timUnik = [...new Set(pegawai
+      .filter(p => p.seksi === selectedSeksi)
+      .map(p => p.tim))];
     setFilteredTim(timUnik);
     setSelectedTim('');
     setSelectedNama('');
@@ -35,6 +38,7 @@ const DaftarPegawai = () => {
     setPengaduan([]);
   }, [selectedSeksi, pegawai]);
 
+  // Update nama berdasarkan tim
   useEffect(() => {
     const namaPegawai = pegawai.filter(
       p => p.seksi === selectedSeksi && p.tim === selectedTim
@@ -42,13 +46,16 @@ const DaftarPegawai = () => {
     setFilteredNama(namaPegawai);
     setSelectedNama('');
     setPengaduan([]);
-  }, [selectedTim, pegawai]);
+  }, [selectedTim]);
 
   const handleLihatTunggakan = () => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/pengaduan/by-pic/${selectedNama}`)
+    if (!selectedNama) return;
+    axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan/by-pic/${selectedNama}`)
       .then(res => setPengaduan(res.data))
-      .catch(err => console.error('Gagal ambil pengaduan:', err));
+      .catch(err => {
+        console.error('❌ Gagal ambil pengaduan:', err);
+        alert('Gagal ambil daftar pengaduan');
+      });
   };
 
   return (
@@ -72,9 +79,7 @@ const DaftarPegawai = () => {
             <select value={selectedTim} onChange={e => setSelectedTim(e.target.value)}>
               <option value="">-- Pilih Tim --</option>
               {filteredTim.map((tim, i) => (
-                <option key={i} value={tim}>
-                  {tim}
-                </option>
+                <option key={i} value={tim}>{tim}</option>
               ))}
             </select>
           </div>
@@ -86,9 +91,7 @@ const DaftarPegawai = () => {
             <select value={selectedNama} onChange={e => setSelectedNama(e.target.value)}>
               <option value="">-- Pilih Nama --</option>
               {filteredNama.map((p, i) => (
-                <option key={i} value={p.PIC}>
-                  {p.PIC}
-                </option>
+                <option key={i} value={p.pic}>{p.pic}</option>
               ))}
             </select>
           </div>
