@@ -31,6 +31,9 @@ const Sidebar = () => {
             <li><Link to="/daftar-pengaduan">Daftar Pengaduan</Link></li>
           </>
         )}
+        {user.role === 'Kepala Subdirektorat' && (
+          <li><Link to="/daftar-pegawai">Daftar Pegawai</Link></li>
+        )}
         {user.role === 'Petugas Dashboard' && (
           <li><Link to="/input-pengaduan">Input Pengaduan</Link></li>
         )}
