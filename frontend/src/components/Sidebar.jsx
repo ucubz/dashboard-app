@@ -1,10 +1,56 @@
-// src/components/Sidebar.jsx import { Link } from 'react-router-dom';
+// components/Sidebar.jsx
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const Sidebar = () => { const user = JSON.parse(localStorage.getItem('user')); const role = user?.role;
+const Sidebar = () => {
+  const navigate = useNavigate();
+  const [userRole, setUserRole] = useState('');
 
-const menu = [ { label: 'Dashboard', to: '/dashboard', roles: ['kepala_subdir', 'kepala_seksi'] }, { label: 'Input Pengaduan', to: '/input-pengaduan', roles: ['petugas_dashboard'] }, { label: 'Daftar Pengaduan', to: '/daftar-pengaduan', roles: ['kepala_subdir', 'kepala_seksi'] }, ];
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUserRole(user.role);
+    }
+  }, []);
 
-return ( <div style={{ width: 200, background: '#eee', height: '100vh', padding: 20 }}> <h3>Menu</h3> <ul style={{ listStyle: 'none', paddingLeft: 0 }}> {menu .filter(item => item.roles.includes(role)) .map((item, index) => ( <li key={index} style={{ marginBottom: 10 }}> <Link to={item.to}>{item.label}</Link> </li> ))} </ul> </div> ); };
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
+  return (
+    <div style={{
+      width: '220px',
+      backgroundColor: '#f0f0f0',
+      height: '100vh',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}>
+      <div>
+        <h3>Menu</h3>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {(userRole === 'kepala_subdir' || userRole === 'kepala_seksi') && (
+            <>
+              <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/daftar-pengaduan">Daftar Pengaduan</Link></li>
+            </>
+          )}
+          {userRole === 'petugas_dashboard' && (
+            <li><Link to="/input-pengaduan">Input Pengaduan</Link></li>
+          )}
+        </ul>
+      </div>
+
+      <div>
+        <button onClick={handleLogout} style={{ width: '100%', padding: '8px', marginTop: '30px' }}>
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default Sidebar;
-
