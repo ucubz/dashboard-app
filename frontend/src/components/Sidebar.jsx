@@ -1,17 +1,10 @@
 // components/Sidebar.jsx
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [userRole, setUserRole] = useState('');
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setUserRole(user.role);
-    }
-  }, []);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const role = user?.role;
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -22,7 +15,7 @@ const Sidebar = () => {
   return (
     <div style={{
       width: '220px',
-      backgroundColor: '#f0f0f0',
+      background: '#f0f0f0',
       height: '100vh',
       padding: '20px',
       display: 'flex',
@@ -32,23 +25,31 @@ const Sidebar = () => {
       <div>
         <h3>Menu</h3>
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          {(userRole === 'kepala_subdir' || userRole === 'kepala_seksi') && (
+          {(role === 'kepala_subdir' || role === 'kepala_seksi') && (
             <>
               <li><Link to="/dashboard">Dashboard</Link></li>
-              <li><Link to="/daftar-pengaduan">Daftar Pengaduan</Link></li>
+              <li><Link to="/daftar-pengaduan">Daftar Tunggakan</Link></li>
             </>
           )}
-          {userRole === 'petugas_dashboard' && (
+          {role === 'petugas_dashboard' && (
             <li><Link to="/input-pengaduan">Input Pengaduan</Link></li>
           )}
         </ul>
       </div>
 
-      <div>
-        <button onClick={handleLogout} style={{ width: '100%', padding: '8px', marginTop: '30px' }}>
-          Logout
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        style={{
+          background: '#d9534f',
+          color: 'white',
+          padding: '10px',
+          border: 'none',
+          cursor: 'pointer',
+          marginTop: '20px'
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 };
