@@ -31,11 +31,11 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(user));
 
       switch (user.role) {
-        case 'kepala_subdirektorat':
-        case 'kepala_seksi':
+        case 'Kepala Subdirektorat':
+        case 'Kepala Seksi':
           navigate('/dashboard');
           break;
-        case 'petugas_dashboard':
+        case 'Petugas Dashboard':
           navigate('/input-pengaduan');
           break;
         default:
