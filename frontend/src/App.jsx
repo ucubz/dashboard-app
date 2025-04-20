@@ -5,6 +5,7 @@ import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
 import DaftarPegawai from './pages/DaftarPegawai'; // ✅ Tambahkan impor
 import RequireAuth from './RequireAuth';
+import InputPegawai from './pages/InputPegawai';
 
 function App() {
   return (
@@ -48,6 +49,14 @@ function App() {
           }
         />
 
+        <Route
+          path="/input-pegawai"
+          element={
+            <RequireAuth allowedRoles={['Petugas Dashboard']}>
+             <InputPegawai />
+            </RequireAuth>
+          }
+/>
         {/* Fallback jika path tidak ditemukan */}
         <Route
           path="*"
