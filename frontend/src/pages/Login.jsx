@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,6 +7,22 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Redirect otomatis jika sudah login
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (token && user) {
+      if (user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') {
+        navigate('/dashboard');
+      } else if (user.role === 'Petugas Dashboard') {
+        navigate('/input-pengaduan');
+      } else {
+        navigate('/');
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,27 +35,26 @@ const Login = () => {
       });
 
       const { token, user } = res.data;
+      console.log("User object dari backend:", user);
+      alert(`✅ Login berhasil. Role: ${user.role}`);
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Normalisasi role (misal: "Kepala Subdirektorat" jadi "kepala_subdirektorat")
-      const role = user.role.toLowerCase().replace(/\s/g, '_');
-
-      switch (role) {
-        case 'kepala_subdirektorat':
-        case 'kepala_seksi':
-          navigate('/dashboard');
-          break;
-        case 'petugas_dashboard':
-          navigate('/input-pengaduan');
-          break;
-        default:
-          console.warn('⛔ Role tidak dikenali:', role);
-          navigate('/');
+      if (user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') {
+        alert("➡️ Redirect ke /dashboard");
+        navigate('/dashboard');
+      } else if (user.role === 'Petugas Dashboard') {
+        alert("➡️ Redirect ke /input-pengaduan");
+        navigate('/input-pengaduan');
+      } else {
+        alert(`⛔ Role tidak dikenali: ${user.role}`);
+        navigate('/');
       }
+
     } catch (err) {
       console.error(err);
+      alert("❌ Login gagal. Username/password salah atau backend error.");
       setError('Login gagal. Cek kembali username/password atau hubungi admin.');
     }
   };
