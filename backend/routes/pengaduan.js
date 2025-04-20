@@ -63,8 +63,7 @@ router.post('/', async (req, res) => {
       ]
     );
 
-console.log('✅ Data berhasil disimpan ke database.');
-
+    console.log('✅ Data berhasil disimpan ke database.');
     res.status(201).json({ message: 'Data pengaduan berhasil disimpan' });
   } catch (err) {
     console.error('❌ Gagal menyimpan data pengaduan:', err.message);
@@ -85,7 +84,7 @@ router.get('/', async (req, res) => {
     }
 
     console.log('📦 Data dari tabel pengaduan:', rows);
-    res.json(rows); // ← pastikan langsung array
+    res.json(rows);
   });
 });
 
@@ -110,6 +109,32 @@ router.get('/debug', async (req, res) => {
   } catch (err) {
     console.error('❌ Debug gagal:', err);
     res.status(500).json({ error: 'Gagal ambil debug data' });
+  }
+});
+
+// ===========================
+// GET - Ambil pengaduan berdasarkan nama pegawai
+// ===========================
+router.get('/pegawai/:nama', async (req, res) => {
+  const db = await initDB();
+  const nama = req.params.nama;
+
+  try {
+    db.all(
+      'SELECT * FROM pengaduan WHERE pegawai_penanggung_jawab = ?',
+      [nama],
+      (err, rows) => {
+        if (err) {
+          console.error('❌ Gagal ambil data pengaduan berdasarkan pegawai:', err.message);
+          return res.status(500).json({ error: 'Gagal ambil data' });
+        }
+
+        res.json(rows);
+      }
+    );
+  } catch (err) {
+    console.error('❌ Gagal ambil data berdasarkan pegawai:', err);
+    res.status(500).json({ error: 'Gagal ambil data' });
   }
 });
 
