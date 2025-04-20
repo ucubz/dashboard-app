@@ -14,16 +14,12 @@ const Login = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (token && user) {
-      switch (user.role) {
-        case 'kepala_subdir':
-        case 'kepala_seksi':
-          navigate('/dashboard');
-          break;
-        case 'petugas_dashboard':
-          navigate('/input-pengaduan');
-          break;
-        default:
-          navigate('/');
+      if (user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') {
+        navigate('/dashboard');
+      } else if (user.role === 'Petugas Dashboard') {
+        navigate('/input-pengaduan');
+      } else {
+        navigate('/');
       }
     }
   }, []);
@@ -45,19 +41,15 @@ const Login = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      switch (user.role) {
-        case 'kepala_subdir':
-        case 'kepala_seksi':
-          alert("➡️ Redirect ke /dashboard");
-          navigate('/dashboard');
-          break;
-        case 'petugas_dashboard':
-          alert("➡️ Redirect ke /input-pengaduan");
-          navigate('/input-pengaduan');
-          break;
-        default:
-          alert(`⛔ Role tidak dikenali: ${user.role}`);
-          navigate('/');
+      if (user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') {
+        alert("➡️ Redirect ke /dashboard");
+        navigate('/dashboard');
+      } else if (user.role === 'Petugas Dashboard') {
+        alert("➡️ Redirect ke /input-pengaduan");
+        navigate('/input-pengaduan');
+      } else {
+        alert(`⛔ Role tidak dikenali: ${user.role}`);
+        navigate('/');
       }
 
     } catch (err) {
