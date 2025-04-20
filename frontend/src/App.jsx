@@ -3,7 +3,8 @@ import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import RequireAuth from './RequireAuth'; // lokasi sesuai root
+import DaftarPegawai from './pages/DaftarPegawai'; // ✅ Tambahkan impor
+import RequireAuth from './RequireAuth';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="/daftar-pegawai"
           element={
@@ -44,9 +46,13 @@ function App() {
               <DaftarPegawai />
             </RequireAuth>
           }
-/>
+        />
+
         {/* Fallback jika path tidak ditemukan */}
-        <Route path="*" element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>} />
+        <Route
+          path="*"
+          element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
+        />
       </Routes>
     </Router>
   );
