@@ -6,11 +6,11 @@ const [selectedSeksi, setSelectedSeksi] = useState(''); const [selectedTim, setS
 
 useEffect(() => { axios.get(${import.meta.env.VITE_API_URL}/api/pegawai) .then(res => setPegawai(res.data)) .catch(err => console.error('Gagal ambil data pegawai:', err)); }, []);
 
-useEffect(() => { const timUnik = [...new Set(pegawai.filter(p => p.seksi === selectedSeksi).map(p => p.tim))]; setFilteredTim(timUnik); setSelectedTim(''); setSelectedNama(''); setFilteredNama([]); setPengaduan([]); }, [selectedSeksi]);
+useEffect(() => { const timUnik = [...new Set(pegawai.filter(p => p.seksi === selectedSeksi).map(p => p.tim))]; setFilteredTim(timUnik); setSelectedTim(''); setSelectedNama(''); setFilteredNama([]); setPengaduan([]); }, [selectedSeksi, pegawai]);
 
-useEffect(() => { const namaPegawai = pegawai.filter(p => p.seksi === selectedSeksi && p.tim === selectedTim); setFilteredNama(namaPegawai); setSelectedNama(''); setPengaduan([]); }, [selectedTim]);
+useEffect(() => { const namaPegawai = pegawai.filter(p => p.seksi === selectedSeksi && p.tim === selectedTim); setFilteredNama(namaPegawai); setSelectedNama(''); setPengaduan([]); }, [selectedTim, pegawai, selectedSeksi]);
 
-const handleLihatTunggakan = () => { axios.get(${import.meta.env.VITE_API_URL}/api/pengaduan/by-pic/${selectedNama}) .then(res => setPengaduan(res.data)) .catch(err => console.error('Gagal ambil pengaduan:', err)); };
+const handleLihatTunggakan = () => { axios.get(${import.meta.env.VITE_API_URL}/api/pengaduan/pegawai/${selectedNama}) .then(res => setPengaduan(res.data)) .catch(err => console.error('Gagal ambil pengaduan:', err)); };
 
 return ( <div style={{ display: 'flex' }}> <Sidebar /> <div style={{ marginLeft: 220, padding: 40, width: '100%' }}> <h2>Daftar Pegawai & Tunggakan Kasus</h2>
 
@@ -28,7 +28,9 @@ return ( <div style={{ display: 'flex' }}> <Sidebar /> <div style={{ marginLeft:
         <label>Tim: </label>
         <select value={selectedTim} onChange={e => setSelectedTim(e.target.value)}>
           <option value="">-- Pilih Tim --</option>
-          {filteredTim.map((tim, i) => <option key={i} value={tim}>{tim}</option>)}
+          {filteredTim.map((tim, i) => (
+            <option key={i} value={tim}>{tim}</option>
+          ))}
         </select>
       </div>
     )}
