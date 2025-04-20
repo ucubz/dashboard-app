@@ -13,16 +13,23 @@ const Login = () => {
     setError('');
 
     try {
+      alert('🔁 Mengirim permintaan login...');
+      console.log('API URL:', import.meta.env.VITE_API_URL);
+
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         username,
         password
       });
 
       const { token, user } = res.data;
+
+      alert(`✅ Login berhasil. Role: ${user.role}`);
+      console.log('Token:', token);
+      console.log('User:', user);
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Redirect sesuai role
       switch (user.role) {
         case 'kepala_subdirektorat':
         case 'kepala_seksi':
@@ -32,10 +39,12 @@ const Login = () => {
           navigate('/input-pengaduan');
           break;
         default:
+          alert('⛔ Role tidak dikenali. Kembali ke halaman login.');
           navigate('/');
       }
     } catch (err) {
-      console.error(err);
+      console.error('❌ Gagal login:', err);
+      alert('❌ Login gagal. Username/password salah atau backend error.');
       setError('Login gagal. Cek kembali username/password atau hubungi admin.');
     }
   };
