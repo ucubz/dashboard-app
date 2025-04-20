@@ -8,54 +8,53 @@ const DaftarPegawai = () => {
   const [filteredTim, setFilteredTim] = useState([]);
   const [filteredNama, setFilteredNama] = useState([]);
   const [pengaduan, setPengaduan] = useState([]);
+  const [pesan, setPesan] = useState('');
 
   const [selectedSeksi, setSelectedSeksi] = useState('');
   const [selectedTim, setSelectedTim] = useState('');
   const [selectedNama, setSelectedNama] = useState('');
 
-  // Ambil data pegawai saat awal
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/pegawai`)
-      .then(res => {
-        console.log('✅ Data pegawai:', res.data);
-        setPegawai(res.data);
-      })
-      .catch(err => {
-        console.error('❌ Gagal ambil data pegawai:', err);
-        alert('Gagal ambil data pegawai');
-      });
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/pegawai`)
+      .then(res => setPegawai(res.data))
+      .catch(err => console.error('Gagal ambil data pegawai:', err));
   }, []);
 
-  // Update tim berdasarkan seksi
   useEffect(() => {
-    const timUnik = [...new Set(pegawai
-      .filter(p => p.seksi === selectedSeksi)
-      .map(p => p.tim))];
+    const timUnik = [...new Set(pegawai.filter(p => p.seksi === selectedSeksi).map(p => p.tim))];
     setFilteredTim(timUnik);
     setSelectedTim('');
     setSelectedNama('');
     setFilteredNama([]);
     setPengaduan([]);
-  }, [selectedSeksi, pegawai]);
+  }, [selectedSeksi]);
 
-  // Update nama berdasarkan tim
   useEffect(() => {
-    const namaPegawai = pegawai.filter(
-      p => p.seksi === selectedSeksi && p.tim === selectedTim
-    );
+    const namaPegawai = pegawai.filter(p => p.seksi === selectedSeksi && p.tim === selectedTim);
     setFilteredNama(namaPegawai);
     setSelectedNama('');
     setPengaduan([]);
   }, [selectedTim]);
 
   const handleLihatTunggakan = () => {
-    if (!selectedNama) return;
-    axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan/by-pic/${selectedNama}`)
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/pengaduan/by-pic/${selectedNama}`)
       .then(res => setPengaduan(res.data))
-      .catch(err => {
-        console.error('❌ Gagal ambil pengaduan:', err);
-        alert('Gagal ambil daftar pengaduan');
-      });
+      .catch(err => console.error('Gagal ambil pengaduan:', err));
+  };
+
+  const handleDelete = async (id) => {
+    if (confirm('Yakin ingin menghapus pegawai ini?')) {
+      try {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/pegawai/${id}`);
+        setPegawai(prev => prev.filter(p => p.id !== id));
+        setPesan('Pegawai berhasil dihapus');
+      } catch (err) {
+        console.error('Gagal hapus pegawai:', err);
+        setPesan('Gagal menghapus pegawai');
+      }
+    }
   };
 
   return (
@@ -63,6 +62,8 @@ const DaftarPegawai = () => {
       <Sidebar />
       <div style={{ marginLeft: 220, padding: 40, width: '100%' }}>
         <h2>Daftar Pegawai & Tunggakan Kasus</h2>
+
+        {pesan && <p>{pesan}</p>}
 
         <div style={{ marginBottom: 20 }}>
           <label>Seksi: </label>
@@ -128,6 +129,37 @@ const DaftarPegawai = () => {
             </table>
           </div>
         )}
+
+        <hr style={{ marginTop: 40, marginBottom: 20 }} />
+        <h3>Seluruh Data Pegawai</h3>
+        <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>NIP</th>
+              <th>User</th>
+              <th>Tim</th>
+              <th>Role</th>
+              <th>Seksi</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pegawai.map(p => (
+              <tr key={p.id}>
+                <td>{p.pic}</td>
+                <td>{p.nip}</td>
+                <td>{p.user}</td>
+                <td>{p.tim}</td>
+                <td>{p.role_di_tim}</td>
+                <td>{p.seksi}</td>
+                <td>
+                  <button onClick={() => handleDelete(p.id)}>Hapus</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
