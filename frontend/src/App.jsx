@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import RequireAuth from './RequireAuth';
+import RequireAuth from './RequireAuth'; // lokasi sesuai root
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <RequireAuth allowedRoles={['kepala_subdirektorat', 'kepala_seksi']}>
+            <RequireAuth allowedRoles={['Kepala Subdirektorat', 'Kepala Seksi']}>
               <Dashboard />
             </RequireAuth>
           }
@@ -23,7 +23,7 @@ function App() {
         <Route
           path="/input-pengaduan"
           element={
-            <RequireAuth allowedRoles={['petugas_dashboard']}>
+            <RequireAuth allowedRoles={['Petugas Dashboard']}>
               <InputPengaduan />
             </RequireAuth>
           }
@@ -32,16 +32,14 @@ function App() {
         <Route
           path="/daftar-pengaduan"
           element={
-            <RequireAuth allowedRoles={['kepala_subdirektorat', 'kepala_seksi']}>
+            <RequireAuth allowedRoles={['Kepala Subdirektorat', 'Kepala Seksi']}>
               <DaftarPengaduan />
             </RequireAuth>
           }
         />
 
-        <Route
-          path="*"
-          element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
-        />
+        {/* Fallback jika path tidak ditemukan */}
+        <Route path="*" element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>} />
       </Routes>
     </Router>
   );
