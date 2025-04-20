@@ -1,3 +1,4 @@
+// src/RequireAuth.jsx
 import { Navigate } from 'react-router-dom';
 
 const RequireAuth = ({ children, allowedRoles }) => {
@@ -8,10 +9,7 @@ const RequireAuth = ({ children, allowedRoles }) => {
     return <Navigate to="/" replace />;
   }
 
-  const userRole = user.role?.toLowerCase().replace(/\s/g, '_');
-
-  if (!allowedRoles.includes(userRole)) {
-    console.warn('⛔ Akses ditolak untuk role:', user.role);
+  if (!allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 
