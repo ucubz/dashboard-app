@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const dbPath = path.resolve(__dirname, '../database.db');
 console.log('📁 [initDB] Menggunakan database di:', dbPath);
@@ -11,7 +12,7 @@ function initDB() {
         reject('Error opening database: ' + err.message);
       } else {
         db.serialize(() => {
-          // Tabel users
+          // Buat tabel users
           db.run(`
             CREATE TABLE IF NOT EXISTS users (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +25,7 @@ function initDB() {
             )
           `);
 
-          // Tabel pengaduan
+          // Buat tabel pengaduan
           db.run(`
             CREATE TABLE IF NOT EXISTS pengaduan (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +46,7 @@ function initDB() {
             )
           `);
 
-          // Tabel pegawai
+          // Buat tabel pegawai
           db.run(`
             CREATE TABLE IF NOT EXISTS pegawai (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,52 +54,64 @@ function initDB() {
               nip TEXT,
               user TEXT UNIQUE,
               tim TEXT,
-              role_di_tim TEXT,
-              seksi TEXT
+              role_di_tim TEXT CHECK(role_di_tim IN ('Ketua Tim', 'Anggota Tim')),
+              seksi TEXT CHECK(seksi IN ('II 1', 'II 2'))
             )
           `);
 
-          // Cek apakah sudah ada user
+          // Isi seed user jika belum ada
           db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
-            if (row.count === 0) {
-              const bcrypt = require('bcrypt');
-              const saltRounds = 10;
+            if (!err && row.count === 0) {
+              const insertUser = db.prepare(`
+                INSERT INTO users (nama, username, password_hash, role, seksi, tim)
+                VALUES (?, ?, ?, ?, ?, ?)
+              `);
 
-              const users = [
-                { nama: 'Admin', username: 'admin', password: 'admin123', role: 'kepala_subdir', seksi: 'II 1', tim: 'Tim 1' },
-                { nama: 'Sekretaris', username: 'sekretaris', password: 'sekretaris123', role: 'kepala_seksi', seksi: 'II 2', tim: 'Tim 2' },
-                { nama: 'Petugas', username: 'petugas', password: 'petugas123', role: 'petugas_dashboard', seksi: 'II 1', tim: 'Tim 3' },
-              ];
+              insertUser.run(
+                'Admin Sistem',
+                'admin',
+                bcrypt.hashSync('admin123', 10),
+                'kepala_subdir',
+                'II 1',
+                'Tim 1'
+              );
+              insertUser.run(
+                'Kepala Seksi 2',
+                'sekretaris',
+                bcrypt.hashSync('sekretaris123', 10),
+                'kepala_seksi',
+                'II 2',
+                'Tim 2'
+              );
+              insertUser.run(
+                'Petugas Input',
+                'petugas',
+                bcrypt.hashSync('petugas123', 10),
+                'petugas_dashboard',
+                'II 2',
+                'Tim 3'
+              );
 
-              users.forEach(user => {
-                const hash = bcrypt.hashSync(user.password, saltRounds);
-                db.run(
-                  `INSERT INTO users (nama, username, password_hash, role, seksi, tim) VALUES (?, ?, ?, ?, ?, ?)`,
-                  [user.nama, user.username, hash, user.role, user.seksi, user.tim]
-                );
-              });
-
-              console.log('✅ Data awal users ditambahkan.');
+              insertUser.finalize();
+              console.log('✅ Data user seed berhasil ditambahkan.');
             }
           });
 
-          // Cek apakah sudah ada pegawai
+          // Isi seed pegawai jika belum ada
           db.get("SELECT COUNT(*) as count FROM pegawai", (err, row) => {
-            if (row.count === 0) {
-              const pegawaiList = [
-                { pic: 'Andi', nip: '197801012005011001', user: '05011001', tim: 'Tim 1', role_di_tim: 'Ketua Tim', seksi: 'II 1' },
-                { pic: 'Budi', nip: '198001022006021002', user: '06021002', tim: 'Tim 1', role_di_tim: 'Anggota Tim', seksi: 'II 1' },
-                { pic: 'Citra', nip: '198502152010032003', user: '10032003', tim: 'Tim 2', role_di_tim: 'Ketua Tim', seksi: 'II 2' },
-              ];
+            if (!err && row.count === 0) {
+              const insertPegawai = db.prepare(`
+                INSERT INTO pegawai (pic, nip, user, tim, role_di_tim, seksi)
+                VALUES (?, ?, ?, ?, ?, ?)
+              `);
 
-              pegawaiList.forEach(p => {
-                db.run(
-                  `INSERT INTO pegawai (pic, nip, user, tim, role_di_tim, seksi) VALUES (?, ?, ?, ?, ?, ?)`,
-                  [p.pic, p.nip, p.user, p.tim, p.role_di_tim, p.seksi]
-                );
-              });
+              insertPegawai.run('Andi Wijaya', '1990010112340001', '12340001', 'Tim 1', 'Ketua Tim', 'II 1');
+              insertPegawai.run('Budi Santoso', '1990010212340002', '12340002', 'Tim 2', 'Anggota Tim', 'II 1');
+              insertPegawai.run('Citra Dewi', '1990020312340003', '12340003', 'Tim 3', 'Ketua Tim', 'II 2');
+              insertPegawai.run('Dian Putra', '1990030412340004', '12340004', 'Tim 4', 'Anggota Tim', 'II 2');
 
-              console.log('✅ Data awal pegawai ditambahkan.');
+              insertPegawai.finalize();
+              console.log('✅ Data pegawai seed berhasil ditambahkan.');
             }
           });
 
