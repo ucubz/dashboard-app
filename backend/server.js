@@ -1,20 +1,20 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const initDB = require('./models/initDB');
-
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const path = require('path');
 const fs = require('fs');
-const app = express();
-const pegawaiRoutes = require('./routes/pegawai');
-
-
-
-
 require('dotenv').config();
+
+const initDB = require('./models/initDB');
+const pegawaiRoutes = require('./routes/pegawai');
+const authRoutes = require('./routes/auth');
+const pengaduanRoutes = require('./routes/pengaduan');
+
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Redis Client
@@ -34,7 +34,7 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Session Config
+// Session Configuration
 app.use(session({
   store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET || 'supersecret',
@@ -43,21 +43,19 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
   }
 }));
 
-// Init DB
+// Initialize database
 initDB();
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/pengaduan', require('./routes/pengaduan'));
-app.use('/api/pegawai', require('./routes/pegawai'));
-app.use('/api/pegawai', require('./routes/pegawai'));
+app.use('/api/auth', authRoutes);
+app.use('/api/pengaduan', pengaduanRoutes);
 app.use('/api/pegawai', pegawaiRoutes);
 
-// Route download database
+// Route untuk mengunduh database
 app.get('/download-db', (req, res) => {
   const dbPath = path.join(__dirname, 'database.db');
   console.log('📦 [Download] Mengakses database di:', dbPath);
@@ -79,6 +77,7 @@ app.get("/", (req, res) => {
   res.send("🚀 Backend is running!");
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Backend listening on port ${PORT}`);
 });
