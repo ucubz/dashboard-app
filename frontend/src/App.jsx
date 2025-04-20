@@ -37,7 +37,14 @@ function App() {
             </RequireAuth>
           }
         />
-
+        <Route
+          path="/daftar-pegawai"
+          element={
+            <RequireAuth allowedRoles={['Kepala Subdirektorat']}>
+              <DaftarPegawai />
+            </RequireAuth>
+          }
+/>
         {/* Fallback jika path tidak ditemukan */}
         <Route path="*" element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>} />
       </Routes>
