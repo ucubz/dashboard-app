@@ -5,32 +5,52 @@ const Layout = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
+  const closeSidebar = () => setShowSidebar(false);
 
   return (
     <>
-      <div
+      {/* Tombol ☰ hanya muncul di mobile */}
+      <button
+        onClick={toggleSidebar}
+        className="sidebar-toggle"
         style={{
           position: 'fixed',
-          top: 10,
-          left: 10,
-          zIndex: 1000,
-          display: 'none',
-          background: '#2c3e50',
+          top: 15,
+          left: 15,
+          zIndex: 1100,
+          backgroundColor: '#2c3e50',
           color: 'white',
           border: 'none',
           padding: '8px 12px',
           borderRadius: '4px',
-          fontSize: '18px',
-          cursor: 'pointer'
+          fontSize: '20px',
+          cursor: 'pointer',
+          display: 'none' // default: disembunyikan di desktop
         }}
-        className="toggle-button"
-        onClick={toggleSidebar}
       >
         ☰
-      </div>
+      </button>
 
-      <Sidebar show={showSidebar} onClose={() => setShowSidebar(false)} />
+      {/* Sidebar */}
+      <Sidebar show={showSidebar} onClose={closeSidebar} />
 
+      {/* Overlay saat sidebar terbuka di mobile */}
+      {showSidebar && (
+        <div
+          onClick={closeSidebar}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            zIndex: 998
+          }}
+        />
+      )}
+
+      {/* Konten utama */}
       <div
         className="main-content"
         style={{
@@ -45,15 +65,16 @@ const Layout = ({ children }) => {
         {children}
       </div>
 
+      {/* Style responsif */}
       <style>
         {`
           @media (max-width: 768px) {
             .main-content {
-              margin-left: 0;
+              margin-left: 0 !important;
               padding: 20px;
             }
 
-            .toggle-button {
+            .sidebar-toggle {
               display: block;
             }
           }
