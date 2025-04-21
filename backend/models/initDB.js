@@ -18,7 +18,7 @@ function initDB() {
               id INTEGER PRIMARY KEY AUTOINCREMENT, 
               username TEXT UNIQUE,
               password TEXT,
-              role TEXT CHECK(role IN ('Kepala Subdirektorat', 'Kepala Seksi', 'Petugas Dashboard')),
+              role TEXT CHECK(role IN ('Kepala Subdirektorat', 'Kepala Seksi', 'Petugas Dashboard'))
             )
           `);
 
