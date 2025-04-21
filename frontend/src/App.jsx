@@ -36,7 +36,7 @@ function AppRoutes() {
       <Route
         path="/daftar-pengaduan"
         element={
-          <RequireAuth allowedRoles={['Kepala Subdirektorat', 'Kepala Seksi']}>
+          <RequireAuth allowedRoles={['Kepala Subdirektorat', 'Kepala Seksi', 'Petugas Dashboard']}>
             <DaftarPengaduan />
           </RequireAuth>
         }
@@ -45,7 +45,7 @@ function AppRoutes() {
       <Route
         path="/daftar-pegawai"
         element={
-          <RequireAuth allowedRoles={['Kepala Subdirektorat']}>
+          <RequireAuth allowedRoles={['Kepala Subdirektorat', 'Petugas Dashboard']}>
             <DaftarPegawai />
           </RequireAuth>
         }
