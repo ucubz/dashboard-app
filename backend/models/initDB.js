@@ -15,13 +15,10 @@ function initDB() {
           // Buat tabel users
           db.run(`
             CREATE TABLE IF NOT EXISTS users (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              nama TEXT,
+              id INTEGER PRIMARY KEY AUTOINCREMENT, 
               username TEXT UNIQUE,
-              password_hash TEXT,
-              role TEXT CHECK(role IN ('kepala_subdir', 'kepala_seksi', 'petugas_dashboard')),
-              seksi TEXT,
-              tim TEXT
+              password TEXT,
+              role TEXT CHECK(role IN ('Kepala Subdirektorat', 'Kepala Seksi', 'Petugas Dashboard')),
             )
           `);
 
@@ -65,33 +62,24 @@ db.run(`
           db.get("SELECT COUNT(*) as count FROM users", (err, row) => {
             if (!err && row.count === 0) {
               const insertUser = db.prepare(`
-                INSERT INTO users (nama, username, password_hash, role, seksi, tim)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO users (username, password, role)
+                VALUES (?, ?, ?)
               `);
 
               insertUser.run(
-                'Admin Sistem',
                 'admin',
                 bcrypt.hashSync('admin123', 10),
-                'kepala_subdir',
-                'II 1',
-                'Tim 1'
+                'Kepala Subdirektorat'
               );
               insertUser.run(
-                'Kepala Seksi 2',
                 'sekretaris',
                 bcrypt.hashSync('sekretaris123', 10),
-                'kepala_seksi',
-                'II 2',
-                'Tim 2'
+                'Kepala Seksi'
               );
               insertUser.run(
-                'Petugas Input',
                 'petugas',
                 bcrypt.hashSync('petugas123', 10),
-                'petugas_dashboard',
-                'II 2',
-                'Tim 3'
+                'Putusan Pengaduan'
               );
 
               insertUser.finalize();
