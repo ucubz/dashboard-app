@@ -21,72 +21,37 @@ const Sidebar = ({ className = '' }) => {
         width: '220px',
         height: '100vh',
         padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
         position: 'fixed',
         left: 0,
-        top: 0
+        top: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
       }}
     >
-      <h3 style={{ marginBottom: '24px', fontSize: '18px' }}>Menu</h3>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {(user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') && (
-          <>
-            <SidebarItem to="/dashboard" label="Dashboard" />
-            <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
-          </>
-        )}
-        {user.role === 'Kepala Subdirektorat' && (
-          <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />
-        )}
-        {user.role === 'Petugas Dashboard' && (
-          <>
-            <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
-            <SidebarItem to="/input-pegawai" label="Input Pegawai" />
-          </>
-        )}
-      </ul>
+      <div>
+        <h3 style={{ marginBottom: '24px', fontSize: '18px' }}>Menu</h3>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          {(user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') && (
+            <>
+              <SidebarItem to="/dashboard" label="Dashboard" />
+              <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
+            </>
+          )}
+          {user.role === 'Kepala Subdirektorat' && (
+            <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />
+          )}
+          {user.role === 'Petugas Dashboard' && (
+            <>
+              <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
+              <SidebarItem to="/input-pegawai" label="Input Pegawai" />
+            </>
+          )}
+        </ul>
+      </div>
 
-      <div style={{ marginTop: 'auto' }}>
+      <div>
         <button
           onClick={handleLogout}
           style={{
-            padding: '10px 14px',
-            backgroundColor: '#e74c3c',
-            border: 'none',
-            borderRadius: '6px',
-            color: 'white',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            width: '100%'
-          }}
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const SidebarItem = ({ to, label }) => (
-  <li style={{ marginBottom: '12px' }}>
-    <Link
-      to={to}
-      style={{
-        color: 'white',
-        textDecoration: 'none',
-        fontWeight: '500',
-        fontSize: '15px',
-        display: 'block',
-        padding: '8px 12px',
-        borderRadius: '6px'
-      }}
-      onMouseEnter={(e) => (e.target.style.backgroundColor = '#34495e')}
-      onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
-    >
-      {label}
-    </Link>
-  </li>
-);
-
-export default Sidebar;
+            padding: '10px 14
