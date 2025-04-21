@@ -1,36 +1,38 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom'; // tambahkan ini
+import { useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
-  const location = useLocation(); // tambahkan ini
-  const [showSidebar, setShowSidebar] = useState(false);
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showSidebar, setShowSidebar] = useState(!isMobile);
 
+  // Cek ukuran layar dan update isMobile + showSidebar
   useEffect(() => {
-    const checkMobile = () => {
+    const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      setShowSidebar(!mobile); // true di desktop, false di mobile
+      setShowSidebar(!mobile); // sidebar terbuka di desktop, tertutup di mobile
     };
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    handleResize(); // langsung cek saat render
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // tambahkan ini supaya check ulang setiap kali halaman berubah
+  // Cek ulang saat route berubah (untuk sidebar di mobile)
   useEffect(() => {
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     setShowSidebar(!mobile);
-  }, [location.pathname]); // ketika route berubah, cek ulang
+  }, [location.pathname]);
 
-  const toggleSidebar = () => setShowSidebar(!showSidebar);
+  const toggleSidebar = () => setShowSidebar(prev => !prev);
   const closeSidebar = () => setShowSidebar(false);
 
   return (
     <>
+      {/* Tombol toggle sidebar hanya di mobile */}
       {isMobile && (
         <button
           onClick={toggleSidebar}
@@ -53,8 +55,10 @@ const Layout = ({ children }) => {
         </button>
       )}
 
+      {/* Sidebar */}
       <Sidebar show={showSidebar} onClose={closeSidebar} />
 
+      {/* Overlay untuk tutup sidebar di mobile */}
       {isMobile && showSidebar && (
         <div
           onClick={closeSidebar}
@@ -70,6 +74,7 @@ const Layout = ({ children }) => {
         />
       )}
 
+      {/* Konten utama */}
       <div
         className="main-content"
         style={{
@@ -79,7 +84,7 @@ const Layout = ({ children }) => {
           backgroundColor: '#f9f9f9',
           boxSizing: 'border-box',
           color: '#333',
-          transition: 'margin-left 0.3s'
+          transition: 'margin-left 0.3s ease-in-out'
         }}
       >
         {children}
