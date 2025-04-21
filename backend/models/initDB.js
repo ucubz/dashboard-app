@@ -79,7 +79,7 @@ db.run(`
               insertUser.run(
                 'petugas',
                 bcrypt.hashSync('petugas123', 10),
-                'Putusan Pengaduan'
+                'Petugas Dashboard'
               );
 
               insertUser.finalize();
