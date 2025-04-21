@@ -67,60 +67,9 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
       </div>
-
-      <style>
-        {`
-          .dashboard-wrapper {
-            display: flex;
-            flex-direction: row;
-            min-height: 100vh;
-          }
-
-          .sidebar {
-            width: 220px;
-            flex-shrink: 0;
-          }
-
-          .dashboard-content {
-            flex: 1;
-            padding: 40px;
-            box-sizing: border-box;
-            overflow-x: auto;
-          }
-
-          @media (max-width: 768px) {
-            .dashboard-wrapper {
-              flex-direction: column;
-            }
-
-            .sidebar {
-              width: 100%;
-            }
-
-            .dashboard-content {
-              padding: 20px;
-            }
-          }
-        `}
-      </style>
-    </div>
-  );
-};
-
-.sidebar-wrapper {
-  background: #2c3e50;
-  color: #ecf0f1;
-  padding: 20px 16px;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .sidebar-wrapper {
-    width: 100%;
-    height: auto;
+</div>
+    );
   }
-}
 
 
 export default Dashboard;
