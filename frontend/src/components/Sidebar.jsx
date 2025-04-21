@@ -53,3 +53,6 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
     </div>
   );
 };
+
+
+export default Sidebar;
