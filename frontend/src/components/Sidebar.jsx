@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Sidebar = ({ show = true, onClose = () => {} }) => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -38,14 +38,15 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
 
   const SidebarItem = ({ to, label }) => (
     <li style={{ marginBottom: '12px' }}>
-      <a
-        href={to}
+      <Link
+        to={to}
         style={linkStyle}
+        onClick={onClose}
         onMouseEnter={(e) => (e.target.style.backgroundColor = '#34495e')}
         onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
       >
         {label}
-      </a>
+      </Link>
     </li>
   );
 
@@ -60,11 +61,9 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
               <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
             </>
           )}
-
           {role === 'Kepala Subdirektorat' && (
             <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />
           )}
-
           {role === 'Petugas Dashboard' && (
             <>
               <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
