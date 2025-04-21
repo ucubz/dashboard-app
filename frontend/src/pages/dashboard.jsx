@@ -1,4 +1,3 @@
-// pages/Dashboard.jsx
 import Sidebar from '../components/Sidebar';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -22,12 +21,12 @@ const COLORS = ['#007bff', '#ffc107', '#dc3545', '#28a745', '#8e44ad'];
 
 const Dashboard = () => {
   return (
-    <div className="dashboard-wrapper">
-      <div className="sidebar">
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: '220px' }}>
         <Sidebar />
       </div>
 
-      <div className="dashboard-content">
+      <div style={{ flex: 1, padding: '40px' }}>
         <h1>Dashboard</h1>
         <p>Selamat datang di aplikasi monitoring kasus!</p>
 
@@ -67,9 +66,8 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
       </div>
-</div>
-    );
-  }
-
+    </div>
+  );
+};
 
 export default Dashboard;
