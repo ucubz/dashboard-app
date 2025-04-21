@@ -1,5 +1,8 @@
 import Sidebar from '../components/Sidebar';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, Legend } from 'recharts';
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  CartesianGrid, PieChart, Pie, Cell, Legend
+} from 'recharts';
 
 const dataStatus = [
   { name: 'Analisis', value: 8 },
@@ -18,9 +21,9 @@ const COLORS = ['#007bff', '#ffc107', '#dc3545', '#28a745', '#8e44ad'];
 
 const Dashboard = () => {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', flexWrap: 'wrap' }}>
+    <div className="dashboard-wrapper">
       <Sidebar />
-      <div style={{ flex: 1, padding: '40px', boxSizing: 'border-box' }}>
+      <div className="dashboard-content">
         <h1>Dashboard</h1>
         <p>Selamat datang di aplikasi monitoring kasus!</p>
 
@@ -70,6 +73,34 @@ const Dashboard = () => {
           Logout
         </button>
       </div>
+
+      <style>
+        {`
+          .dashboard-wrapper {
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+            flex-wrap: nowrap;
+          }
+
+          .dashboard-content {
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-x: auto;
+          }
+
+          @media (max-width: 768px) {
+            .dashboard-wrapper {
+              flex-direction: column;
+            }
+
+            .dashboard-content {
+              padding: 20px;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
