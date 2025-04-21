@@ -50,12 +50,19 @@ const DaftarPengaduan = () => {
   );
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      minHeight: '100vh'
+    }}>
       <Sidebar />
       <div style={{
         flex: 1,
         padding: '20px',
-        overflowX: 'auto'
+        boxSizing: 'border-box',
+        overflowX: 'auto',
+        width: '100%'
       }}>
         <h2>Daftar Pengaduan</h2>
         <div style={{ minWidth: '1200px' }}>
@@ -101,6 +108,7 @@ const DaftarPengaduan = () => {
       </div>
     </div>
   );
+  
   
 };
 
