@@ -6,6 +6,8 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
 
   if (!user) return null;
 
+  const isMobile = window.innerWidth <= 768;
+
   const sidebarStyle = {
     backgroundColor: '#2c3e50',
     color: 'white',
@@ -14,13 +16,14 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
     padding: '20px',
     position: 'fixed',
     top: 0,
-    left: show ? 0 : '-240px',
+    left: isMobile ? (show ? 0 : '-240px') : 0,
     transition: 'left 0.3s ease-in-out',
     zIndex: 999,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
   };
+  
 
   return (
     <div style={sidebarStyle}>
