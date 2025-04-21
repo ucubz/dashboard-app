@@ -58,13 +58,24 @@ const DaftarPegawai = () => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      minHeight: '100vh'
+    }}>
       <Sidebar />
-      <div style={{ marginLeft: 220, padding: 40, width: '100%' }}>
+      <div style={{
+        flex: 1,
+        padding: '20px',
+        boxSizing: 'border-box',
+        overflowX: 'auto',
+        width: '100%'
+      }}>
         <h2>Daftar Pegawai & Tunggakan Kasus</h2>
-
+  
         {pesan && <p>{pesan}</p>}
-
+  
         <div style={{ marginBottom: 20 }}>
           <label>Seksi: </label>
           <select value={selectedSeksi} onChange={e => setSelectedSeksi(e.target.value)}>
@@ -73,7 +84,7 @@ const DaftarPegawai = () => {
             <option value="II 2">II 2</option>
           </select>
         </div>
-
+  
         {filteredTim.length > 0 && (
           <div style={{ marginBottom: 20 }}>
             <label>Tim: </label>
@@ -85,7 +96,7 @@ const DaftarPegawai = () => {
             </select>
           </div>
         )}
-
+  
         {filteredNama.length > 0 && (
           <div style={{ marginBottom: 20 }}>
             <label>Nama: </label>
@@ -97,72 +108,77 @@ const DaftarPegawai = () => {
             </select>
           </div>
         )}
-
+  
         {selectedNama && (
           <button onClick={handleLihatTunggakan}>Lihat Tunggakan</button>
         )}
-
+  
         {pengaduan.length > 0 && (
           <div style={{ marginTop: 30 }}>
             <h3>Tunggakan {selectedNama}</h3>
-            <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>Nomor FPP</th>
-                  <th>Tahun</th>
-                  <th>Lokasi</th>
-                  <th>Status</th>
-                  <th>Skor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pengaduan.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.nomor_fpp}</td>
-                    <td>{item.tahun_fpp}</td>
-                    <td>{item.lokasi_pelanggaran}</td>
-                    <td>{item.status_tindak_lanjut}</td>
-                    <td>{item.skor_kasus}</td>
+            <div style={{ overflowX: 'auto' }}>
+              <table border="1" cellPadding="8" style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th>Nomor FPP</th>
+                    <th>Tahun</th>
+                    <th>Lokasi</th>
+                    <th>Status</th>
+                    <th>Skor</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {pengaduan.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.nomor_fpp}</td>
+                      <td>{item.tahun_fpp}</td>
+                      <td>{item.lokasi_pelanggaran}</td>
+                      <td>{item.status_tindak_lanjut}</td>
+                      <td>{item.skor_kasus}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
-
+  
         <hr style={{ marginTop: 40, marginBottom: 20 }} />
         <h3>Seluruh Data Pegawai</h3>
-        <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>NIP</th>
-              <th>User</th>
-              <th>Tim</th>
-              <th>Role</th>
-              <th>Seksi</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pegawai.map(p => (
-              <tr key={p.id}>
-                <td>{p.pic}</td>
-                <td>{p.nip}</td>
-                <td>{p.user}</td>
-                <td>{p.tim}</td>
-                <td>{p.role_di_tim}</td>
-                <td>{p.seksi}</td>
-                <td>
-                  <button onClick={() => handleDelete(p.id)}>Hapus</button>
-                </td>
+        <div style={{ overflowX: 'auto' }}>
+          <table border="1" cellPadding="8" style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>NIP</th>
+                <th>User</th>
+                <th>Tim</th>
+                <th>Role</th>
+                <th>Seksi</th>
+                <th>Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {pegawai.map(p => (
+                <tr key={p.id}>
+                  <td>{p.pic}</td>
+                  <td>{p.nip}</td>
+                  <td>{p.user}</td>
+                  <td>{p.tim}</td>
+                  <td>{p.role_di_tim}</td>
+                  <td>{p.seksi}</td>
+                  <td>
+                    <button onClick={() => handleDelete(p.id)}>Hapus</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
+  
 };
 
 export default DaftarPegawai;
