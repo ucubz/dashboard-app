@@ -1,3 +1,4 @@
+// pages/Dashboard.jsx
 import Sidebar from '../components/Sidebar';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -22,7 +23,10 @@ const COLORS = ['#007bff', '#ffc107', '#dc3545', '#28a745', '#8e44ad'];
 const Dashboard = () => {
   return (
     <div className="dashboard-wrapper">
-      <Sidebar />
+      <div className="sidebar">
+        <Sidebar />
+      </div>
+
       <div className="dashboard-content">
         <h1>Dashboard</h1>
         <p>Selamat datang di aplikasi monitoring kasus!</p>
@@ -62,16 +66,6 @@ const Dashboard = () => {
             </PieChart>
           </ResponsiveContainer>
         </div>
-
-        <button
-          style={{ marginTop: '60px' }}
-          onClick={() => {
-            localStorage.removeItem('token');
-            window.location.href = '/';
-          }}
-        >
-          Logout
-        </button>
       </div>
 
       <style>
@@ -80,7 +74,11 @@ const Dashboard = () => {
             display: flex;
             flex-direction: row;
             min-height: 100vh;
-            flex-wrap: nowrap;
+          }
+
+          .sidebar {
+            width: 220px;
+            flex-shrink: 0;
           }
 
           .dashboard-content {
@@ -93,6 +91,10 @@ const Dashboard = () => {
           @media (max-width: 768px) {
             .dashboard-wrapper {
               flex-direction: column;
+            }
+
+            .sidebar {
+              width: 100%;
             }
 
             .dashboard-content {
