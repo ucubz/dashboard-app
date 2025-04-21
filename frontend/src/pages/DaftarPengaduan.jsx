@@ -104,7 +104,7 @@ const DaftarPengaduan = () => {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
-      <div style={{ flex: 1, padding: '20px', overflowX: 'auto' }}>
+      <div style={{ flex: 1, padding: '20px', overflowX: 'auto', marginLeft: '220px' }}>
         <h2>Daftar Pengaduan</h2>
 
         <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
