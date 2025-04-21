@@ -4,6 +4,10 @@ import Sidebar from '../components/Sidebar';
 
 const DaftarPengaduan = () => {
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+  const [filterKategori, setFilterKategori] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
 
   useEffect(() => {
     axios.get('https://dashboard-app-backend-t4me.onrender.com/api/pengaduan')
@@ -26,7 +30,7 @@ const DaftarPengaduan = () => {
 
     switch (status) {
       case 'analisis': return { ...base, backgroundColor: '#007bff' };
-      case 'pulbaket': return { ...base, backgroundColor: '#ffc107' };
+      case 'pulbaket': return { ...base, backgroundColor: '#ffc107', color: '#333' };
       case 'investigasi': return { ...base, backgroundColor: '#dc3545' };
       case 'selesai': return { ...base, backgroundColor: '#28a745' };
       default: return base;
@@ -49,43 +53,138 @@ const DaftarPengaduan = () => {
     </div>
   );
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...data].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+    if (aValue === null || aValue === undefined) return 1;
+    if (bValue === null || bValue === undefined) return -1;
+    if (typeof aValue === 'number') {
+      return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    return sortConfig.direction === 'asc'
+      ? aValue.toString().localeCompare(bValue.toString())
+      : bValue.toString().localeCompare(aValue.toString());
+  });
+
+  const filteredData = sortedData.filter(row => {
+    const matchSearch = Object.values(row).some(val =>
+      val?.toString().toLowerCase().includes(searchText.toLowerCase())
+    );
+    const matchKategori = filterKategori ? row.kategori_pelanggaran === filterKategori : true;
+    const matchStatus = filterStatus ? row.status_tindak_lanjut === filterStatus : true;
+    return matchSearch && matchKategori && matchStatus;
+  });
+
+  const columns = [
+    ['Nomor FPP', 'nomor_fpp'],
+    ['Tahun', 'tahun_fpp'],
+    ['Periode', 'periode_pelanggaran'],
+    ['Lokasi', 'lokasi_pelanggaran'],
+    ['Kategori', 'kategori_pelanggaran'],
+    ['Terlapor', 'identitas_terlapor'],
+    ['Tim', 'tim_penanggung_jawab'],
+    ['Pelaksana', 'pegawai_penanggung_jawab'],
+    ['Status', 'status_tindak_lanjut'],
+    ['Progress', 'persentase_tindak_lanjut'],
+    ['Skor', 'skor_kasus']
+  ];
+
+  const uniqueKategori = [...new Set(data.map(d => d.kategori_pelanggaran))];
+  const uniqueStatus = [...new Set(data.map(d => d.status_tindak_lanjut))];
+
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      minHeight: '100vh'
-    }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
-      <div style={{
-        flex: 1,
-        padding: '20px',
-        boxSizing: 'border-box',
-        overflowX: 'auto',
-        width: '100%'
-      }}>
+      <div style={{ flex: 1, padding: '20px', overflowX: 'auto' }}>
         <h2>Daftar Pengaduan</h2>
+
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            placeholder="Cari teks..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{
+              padding: '8px 12px',
+              borderRadius: '6px',
+              border: '1px solid #ccc',
+              flex: '1 1 200px'
+            }}
+          />
+
+          <select
+            value={filterKategori}
+            onChange={(e) => setFilterKategori(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc' }}
+          >
+            <option value="">Semua Kategori</option>
+            {uniqueKategori.map((kategori, idx) => (
+              <option key={idx} value={kategori}>{kategori}</option>
+            ))}
+          </select>
+
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ccc' }}
+          >
+            <option value="">Semua Status</option>
+            {uniqueStatus.map((status, idx) => (
+              <option key={idx} value={status}>{status}</option>
+            ))}
+          </select>
+        </div>
+
         <div style={{ minWidth: '1200px' }}>
-          <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <thead style={{ backgroundColor: '#f2f2f2' }}>
+          <table
+            cellPadding="10"
+            style={{
+              borderCollapse: 'collapse',
+              width: '100%',
+              backgroundColor: 'white',
+              fontFamily: 'Arial, sans-serif',
+              fontSize: '14px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
+            }}
+          >
+            <thead style={{ backgroundColor: '#2c3e50', color: 'white' }}>
               <tr>
-                <th>Nomor FPP</th>
-                <th>Tahun</th>
-                <th>Periode</th>
-                <th>Lokasi</th>
-                <th>Kategori</th>
-                <th>Terlapor</th>
-                <th>Tim</th>
-                <th>Pelaksana</th>
-                <th>Status</th>
-                <th>Progress</th>
-                <th>Skor</th>
+                {columns.map(([label, key]) => (
+                  <th
+                    key={key}
+                    onClick={() => handleSort(key)}
+                    style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    {label}
+                    {sortConfig.key === key && (
+                      sortConfig.direction === 'asc' ? ' ▲' : ' ▼'
+                    )}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {data.length > 0 ? (
-                data.map((item, idx) => (
-                  <tr key={idx}>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, idx) => (
+                  <tr
+                    key={idx}
+                    style={{
+                      borderBottom: '1px solid #ddd',
+                      backgroundColor: idx % 2 === 0 ? '#f9f9f9' : 'white',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#eaf4ff')}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = idx % 2 === 0 ? '#f9f9f9' : 'white')}
+                  >
                     <td>{item.nomor_fpp}</td>
                     <td>{item.tahun_fpp}</td>
                     <td>{item.periode_pelanggaran}</td>
@@ -100,7 +199,11 @@ const DaftarPengaduan = () => {
                   </tr>
                 ))
               ) : (
-                <tr><td colSpan="11" style={{ textAlign: 'center' }}>Tidak ada data</td></tr>
+                <tr>
+                  <td colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
+                    Tidak ada data
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -108,8 +211,6 @@ const DaftarPengaduan = () => {
       </div>
     </div>
   );
-  
-  
 };
 
 export default DaftarPengaduan;
