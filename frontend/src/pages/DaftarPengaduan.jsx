@@ -186,4 +186,31 @@ const DaftarPengaduan = () => {
                     onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = idx % 2 === 0 ? '#f9f9f9' : 'white')}
                   >
                     <td>{item.nomor_fpp}</td>
-                    <td>{item.tahun_fpp}</_
+                    <td>{item.tahun_fpp}</td>
+                    <td>{item.periode_pelanggaran}</td>
+                    <td>{item.lokasi_pelanggaran}</td>
+                    <td>{item.kategori_pelanggaran}</td>
+                    <td>{item.identitas_terlapor}</td>
+                    <td>{item.tim_penanggung_jawab}</td>
+                    <td>{item.pegawai_penanggung_jawab}</td>
+                    <td><span style={statusStyle(item.status_tindak_lanjut)}>{item.status_tindak_lanjut}</span></td>
+                    <td>{renderProgress(item.persentase_tindak_lanjut)}</td>
+                    <td>{item.skor_kasus}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
+                    Tidak ada data
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default DaftarPengaduan;

@@ -54,4 +54,42 @@ const Sidebar = ({ className = '' }) => {
         <button
           onClick={handleLogout}
           style={{
-            padding: '10px 14
+            padding: '10px 14px',
+            backgroundColor: '#e74c3c',
+            border: 'none',
+            borderRadius: '6px',
+            color: 'white',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            width: '100%'
+          }}
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const SidebarItem = ({ to, label }) => (
+  <li style={{ marginBottom: '12px' }}>
+    <Link
+      to={to}
+      style={{
+        color: 'white',
+        textDecoration: 'none',
+        fontWeight: '500',
+        fontSize: '15px',
+        display: 'block',
+        padding: '8px 12px',
+        borderRadius: '6px'
+      }}
+      onMouseEnter={(e) => (e.target.style.backgroundColor = '#34495e')}
+      onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
+    >
+      {label}
+    </Link>
+  </li>
+);
+
+export default Sidebar;
