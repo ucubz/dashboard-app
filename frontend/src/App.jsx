@@ -3,11 +3,14 @@ import Login from "./pages/Login";
 import Dashboard from './pages/dashboard';
 import InputPengaduan from './pages/InputPengaduan';
 import DaftarPengaduan from './pages/DaftarPengaduan';
-import DaftarPegawai from './pages/DaftarPegawai'; // ✅ Tambahkan impor
+import DaftarPegawai from './pages/DaftarPegawai';
 import RequireAuth from './RequireAuth';
 import InputPegawai from './pages/InputPegawai';
+import useAutoLogout from './hooks/useAutoLogout'; // ⬅️ Tambahkan ini
 
 function App() {
+  useAutoLogout(); // ⬅️ Panggil hook di sini
+
   return (
     <Router>
       <Routes>
@@ -53,11 +56,11 @@ function App() {
           path="/input-pegawai"
           element={
             <RequireAuth allowedRoles={['Petugas Dashboard']}>
-             <InputPegawai />
+              <InputPegawai />
             </RequireAuth>
           }
-/>
-        {/* Fallback jika path tidak ditemukan */}
+        />
+
         <Route
           path="*"
           element={<div style={{ padding: 40 }}>404 - Halaman tidak ditemukan</div>}
