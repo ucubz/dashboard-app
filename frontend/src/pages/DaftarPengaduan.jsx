@@ -50,51 +50,58 @@ const DaftarPengaduan = () => {
   );
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
-      <div style={{ marginLeft: '220px', padding: '20px', width: '100%' }}>
+      <div style={{
+        flex: 1,
+        padding: '20px',
+        overflowX: 'auto'
+      }}>
         <h2>Daftar Pengaduan</h2>
-        <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
-          <thead style={{ backgroundColor: '#f2f2f2' }}>
-            <tr>
-              <th>Nomor FPP</th>
-              <th>Tahun</th>
-              <th>Periode</th>
-              <th>Lokasi</th>
-              <th>Kategori</th>
-              <th>Terlapor</th>
-              <th>Tim</th>
-              <th>Pelaksana</th>
-              <th>Status</th>
-              <th>Progress</th>
-              <th>Skor</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map((item, idx) => (
-                <tr key={idx}>
-                  <td>{item.nomor_fpp}</td>
-                  <td>{item.tahun_fpp}</td>
-                  <td>{item.periode_pelanggaran}</td>
-                  <td>{item.lokasi_pelanggaran}</td>
-                  <td>{item.kategori_pelanggaran}</td>
-                  <td>{item.identitas_terlapor}</td>
-                  <td>{item.tim_penanggung_jawab}</td>
-                  <td>{item.pegawai_penanggung_jawab}</td>
-                  <td><span style={statusStyle(item.status_tindak_lanjut)}>{item.status_tindak_lanjut}</span></td>
-                  <td>{renderProgress(item.persentase_tindak_lanjut)}</td>
-                  <td>{item.skor_kasus}</td>
-                </tr>
-              ))
-            ) : (
-              <tr><td colSpan="11" style={{ textAlign: 'center' }}>Tidak ada data</td></tr>
-            )}
-          </tbody>
-        </table>
+        <div style={{ minWidth: '1200px' }}>
+          <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <thead style={{ backgroundColor: '#f2f2f2' }}>
+              <tr>
+                <th>Nomor FPP</th>
+                <th>Tahun</th>
+                <th>Periode</th>
+                <th>Lokasi</th>
+                <th>Kategori</th>
+                <th>Terlapor</th>
+                <th>Tim</th>
+                <th>Pelaksana</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>Skor</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.length > 0 ? (
+                data.map((item, idx) => (
+                  <tr key={idx}>
+                    <td>{item.nomor_fpp}</td>
+                    <td>{item.tahun_fpp}</td>
+                    <td>{item.periode_pelanggaran}</td>
+                    <td>{item.lokasi_pelanggaran}</td>
+                    <td>{item.kategori_pelanggaran}</td>
+                    <td>{item.identitas_terlapor}</td>
+                    <td>{item.tim_penanggung_jawab}</td>
+                    <td>{item.pegawai_penanggung_jawab}</td>
+                    <td><span style={statusStyle(item.status_tindak_lanjut)}>{item.status_tindak_lanjut}</span></td>
+                    <td>{renderProgress(item.persentase_tindak_lanjut)}</td>
+                    <td>{item.skor_kasus}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr><td colSpan="11" style={{ textAlign: 'center' }}>Tidak ada data</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
+  
 };
 
 export default DaftarPengaduan;
