@@ -1,7 +1,7 @@
 // components/Sidebar.jsx
 import { Link, useNavigate } from 'react-router-dom';
 
-const Sidebar = () => {
+const Sidebar = ({ className = '' }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
 
@@ -14,15 +14,7 @@ const Sidebar = () => {
   if (!user) return null;
 
   return (
-    <div style={{
-      width: '220px',
-      minWidth: '220px',
-      background: '#2c3e50',
-      color: '#ecf0f1',
-      padding: '20px 16px',
-      height: '100%',
-      boxSizing: 'border-box',
-    }}>
+    <div className={`sidebar-wrapper ${className}`}>
       <h3 style={{ marginBottom: '24px', fontSize: '18px' }}>Menu</h3>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         {(user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') && (

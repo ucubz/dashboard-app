@@ -107,4 +107,20 @@ const Dashboard = () => {
   );
 };
 
+.sidebar-wrapper {
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .sidebar-wrapper {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
 export default Dashboard;
