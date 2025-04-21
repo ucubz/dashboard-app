@@ -9,10 +9,10 @@ const Layout = ({ children }) => {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
-      setShowSidebar(!mobile); // true di desktop, false di mobile
+      setShowSidebar(!mobile); // otomatis show di desktop
     };
 
-    handleResize(); // saat pertama render
+    handleResize(); // initial check
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -22,33 +22,32 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {/* Tombol toggle sidebar (hanya tampil di mobile) */}
-      {isMobile && (
-        <button
-          onClick={toggleSidebar}
-          className="sidebar-toggle"
-          style={{
-            position: 'fixed',
-            top: 15,
-            left: 15,
-            zIndex: 1100,
-            backgroundColor: '#2c3e50',
-            color: 'white',
-            border: 'none',
-            padding: '8px 12px',
-            borderRadius: '4px',
-            fontSize: '20px',
-            cursor: 'pointer'
-          }}
-        >
-          ☰
-        </button>
-      )}
+      {/* Tombol toggle sidebar */}
+      <button
+        onClick={toggleSidebar}
+        className="sidebar-toggle"
+        style={{
+          position: 'fixed',
+          top: 15,
+          left: 15,
+          zIndex: 1100,
+          backgroundColor: '#2c3e50',
+          color: 'white',
+          border: 'none',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          display: isMobile ? 'block' : 'none' // backup visibility
+        }}
+      >
+        ☰
+      </button>
 
       {/* Sidebar */}
       <Sidebar show={showSidebar} onClose={closeSidebar} />
 
-      {/* Overlay hitam saat sidebar terbuka di mobile */}
+      {/* Overlay untuk sidebar di mobile */}
       {isMobile && showSidebar && (
         <div
           onClick={closeSidebar}
