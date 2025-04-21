@@ -3,18 +3,21 @@ import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      setShowSidebar(!mobile); // otomatis show di desktop
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setShowSidebar(true); // always show on desktop
+      } else {
+        setShowSidebar(false); // hide by default on mobile
+      }
     };
 
-    handleResize(); // initial check
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    checkMobile(); // run on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
@@ -22,32 +25,30 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {/* Tombol toggle sidebar */}
-      <button
-        onClick={toggleSidebar}
-        className="sidebar-toggle"
-        style={{
-          position: 'fixed',
-          top: 15,
-          left: 15,
-          zIndex: 1100,
-          backgroundColor: '#2c3e50',
-          color: 'white',
-          border: 'none',
-          padding: '8px 12px',
-          borderRadius: '4px',
-          fontSize: '20px',
-          cursor: 'pointer',
-          display: isMobile ? 'block' : 'none' // backup visibility
-        }}
-      >
-        ☰
-      </button>
+      {isMobile && (
+        <button
+          onClick={toggleSidebar}
+          className="sidebar-toggle"
+          style={{
+            position: 'fixed',
+            top: 15,
+            left: 15,
+            zIndex: 1100,
+            backgroundColor: '#2c3e50',
+            color: 'white',
+            border: 'none',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            fontSize: '20px',
+            cursor: 'pointer'
+          }}
+        >
+          ☰
+        </button>
+      )}
 
-      {/* Sidebar */}
       <Sidebar show={showSidebar} onClose={closeSidebar} />
 
-      {/* Overlay untuk sidebar di mobile */}
       {isMobile && showSidebar && (
         <div
           onClick={closeSidebar}
@@ -63,7 +64,6 @@ const Layout = ({ children }) => {
         />
       )}
 
-      {/* Konten utama */}
       <div
         className="main-content"
         style={{
@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
           backgroundColor: '#f9f9f9',
           boxSizing: 'border-box',
           color: '#333',
-          transition: 'margin-left 0.3s'
+          transition: 'margin-left 0.3s ease'
         }}
       >
         {children}
