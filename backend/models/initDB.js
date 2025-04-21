@@ -26,25 +26,27 @@ function initDB() {
           `);
 
           // Buat tabel pengaduan
-          db.run(`
-            CREATE TABLE IF NOT EXISTS pengaduan (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              nomor_fpp TEXT,
-              tahun_fpp INTEGER,
-              lokasi_pelanggaran TEXT,
-              periode_pelanggaran TEXT,
-              kategori_pelanggaran TEXT CHECK(kategori_pelanggaran IN ('fraud', 'non-fraud')),
-              identitas_terlapor TEXT,
-              deskripsi_singkat TEXT,
-              tim_penanggung_jawab TEXT,
-              pegawai_penanggung_jawab TEXT,
-              status_tindak_lanjut TEXT,
-              persentase_tindak_lanjut INTEGER,
-              nilai_kompleksitas INTEGER,
-              nilai_risiko INTEGER,
-              skor_kasus INTEGER
-            )
-          `);
+db.run(`
+  CREATE TABLE IF NOT EXISTS pengaduan (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nomor_fpp TEXT,
+    tahun_fpp INTEGER,
+    lokasi_pelanggaran TEXT,
+    periode_pelanggaran TEXT,
+    kategori_pelanggaran TEXT CHECK(kategori_pelanggaran IN ('fraud', 'non-fraud')),
+    identitas_terlapor TEXT,
+    deskripsi_singkat TEXT,
+    tim_penanggung_jawab TEXT,
+    pegawai_penanggung_jawab TEXT,
+    seksi TEXT CHECK(seksi IN ('II 1', 'II 2')),  -- ✅ tambahkan ini
+    status_tindak_lanjut TEXT,
+    persentase_tindak_lanjut INTEGER,
+    nilai_kompleksitas INTEGER,
+    nilai_risiko INTEGER,
+    skor_kasus INTEGER
+  )
+`);
+
 
           // Buat tabel pegawai
           db.run(`
