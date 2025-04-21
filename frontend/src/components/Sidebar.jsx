@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 const Sidebar = ({ show = true, onClose = () => {} }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
