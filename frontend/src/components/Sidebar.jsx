@@ -66,6 +66,8 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
           )}
           {role === 'Petugas Dashboard' && (
             <>
+              <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
+              <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />   
               <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
               <SidebarItem to="/input-pegawai" label="Input Pegawai" />
             </>
