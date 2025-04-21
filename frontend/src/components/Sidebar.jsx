@@ -6,6 +6,7 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
 
   if (!user) return null;
 
+  const role = user.role;
   const isMobile = window.innerWidth <= 768;
 
   const sidebarStyle = {
@@ -24,14 +25,52 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
     justifyContent: 'space-between',
     overflowY: 'auto'
   };
-  
+
+  const linkStyle = {
+    color: 'white',
+    textDecoration: 'none',
+    fontWeight: '500',
+    fontSize: '15px',
+    display: 'block',
+    padding: '8px 12px',
+    borderRadius: '6px'
+  };
+
+  const SidebarItem = ({ to, label }) => (
+    <li style={{ marginBottom: '12px' }}>
+      <a
+        href={to}
+        style={linkStyle}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = '#34495e')}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
+      >
+        {label}
+      </a>
+    </li>
+  );
 
   return (
     <div style={sidebarStyle}>
       <div>
         <h3 style={{ marginBottom: '24px', fontSize: '18px' }}>Menu</h3>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {/* menu item */}
+          {(role === 'Kepala Subdirektorat' || role === 'Kepala Seksi') && (
+            <>
+              <SidebarItem to="/dashboard" label="Dashboard" />
+              <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
+            </>
+          )}
+
+          {role === 'Kepala Subdirektorat' && (
+            <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />
+          )}
+
+          {role === 'Petugas Dashboard' && (
+            <>
+              <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
+              <SidebarItem to="/input-pegawai" label="Input Pegawai" />
+            </>
+          )}
         </ul>
       </div>
 
@@ -50,7 +89,8 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
             color: 'white',
             cursor: 'pointer',
             fontWeight: 'bold',
-            width: '100%'
+            width: '100%',
+            marginTop: '20px'
           }}
         >
           Logout
@@ -59,6 +99,5 @@ const Sidebar = ({ show = true, onClose = () => {} }) => {
     </div>
   );
 };
-
 
 export default Sidebar;
