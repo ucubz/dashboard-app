@@ -48,10 +48,10 @@ const DaftarPegawai = () => {
       try {
         await axios.delete(`${import.meta.env.VITE_API_URL}/api/pegawai/${id}`);
         setPegawai(prev => prev.filter(p => p.id !== id));
-        setPesan('Pegawai berhasil dihapus');
+        setPesan('✅ Pegawai berhasil dihapus');
       } catch (err) {
         console.error('Gagal hapus pegawai:', err);
-        setPesan('Gagal menghapus pegawai');
+        setPesan('❌ Gagal menghapus pegawai');
       }
     }
   };
@@ -60,7 +60,11 @@ const DaftarPegawai = () => {
     <Layout>
       <h2>Daftar Pegawai & Tunggakan Kasus</h2>
 
-      {pesan && <p>{pesan}</p>}
+      {pesan && (
+        <div style={{ margin: '10px 0', color: pesan.includes('berhasil') ? 'green' : 'red' }}>
+          {pesan}
+        </div>
+      )}
 
       <div style={{ marginBottom: 20 }}>
         <label>Seksi: </label>
@@ -104,7 +108,7 @@ const DaftarPegawai = () => {
           <h3>Tunggakan {selectedNama}</h3>
           <div style={{ overflowX: 'auto' }}>
             <table border="1" cellPadding="8" style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse' }}>
-              <thead>
+              <thead style={{ backgroundColor: '#f0f0f0' }}>
                 <tr>
                   <th>Nomor FPP</th>
                   <th>Tahun</th>
@@ -133,7 +137,7 @@ const DaftarPegawai = () => {
       <h3>Seluruh Data Pegawai</h3>
       <div style={{ overflowX: 'auto' }}>
         <table border="1" cellPadding="8" style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse' }}>
-          <thead>
+          <thead style={{ backgroundColor: '#2c3e50', color: 'white' }}>
             <tr>
               <th>Nama</th>
               <th>NIP</th>
@@ -154,7 +158,19 @@ const DaftarPegawai = () => {
                 <td>{p.role_di_tim}</td>
                 <td>{p.seksi}</td>
                 <td>
-                  <button onClick={() => handleDelete(p.id)}>Hapus</button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    style={{
+                      backgroundColor: '#e74c3c',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      padding: '4px 8px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Hapus
+                  </button>
                 </td>
               </tr>
             ))}
