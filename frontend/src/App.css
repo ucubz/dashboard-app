@@ -4,6 +4,16 @@
   padding: 2rem;
   text-align: center;
 }
+/* App.css */
+.sidebar-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block !important;
+  }
+}
 
 .logo {
   height: 6em;
