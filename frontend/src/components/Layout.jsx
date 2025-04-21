@@ -1,24 +1,30 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom'; // tambahkan ini
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
+  const location = useLocation(); // tambahkan ini
   const [showSidebar, setShowSidebar] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) {
-        setShowSidebar(true); // always show on desktop
-      } else {
-        setShowSidebar(false); // hide by default on mobile
-      }
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setShowSidebar(!mobile); // true di desktop, false di mobile
     };
 
-    checkMobile(); // run on mount
+    checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // tambahkan ini supaya check ulang setiap kali halaman berubah
+  useEffect(() => {
+    const mobile = window.innerWidth <= 768;
+    setIsMobile(mobile);
+    setShowSidebar(!mobile);
+  }, [location.pathname]); // ketika route berubah, cek ulang
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
   const closeSidebar = () => setShowSidebar(false);
@@ -73,7 +79,7 @@ const Layout = ({ children }) => {
           backgroundColor: '#f9f9f9',
           boxSizing: 'border-box',
           color: '#333',
-          transition: 'margin-left 0.3s ease'
+          transition: 'margin-left 0.3s'
         }}
       >
         {children}
