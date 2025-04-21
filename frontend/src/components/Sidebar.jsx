@@ -1,4 +1,3 @@
-// components/Sidebar.jsx
 import { Link, useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ className = '' }) => {
@@ -14,34 +13,36 @@ const Sidebar = ({ className = '' }) => {
   if (!user) return null;
 
   return (
-    <div className={`sidebar-wrapper ${className}`}>
+    <div
+      className={`sidebar-wrapper ${className}`}
+      style={{
+        backgroundColor: '#2c3e50',
+        color: 'white',
+        width: '220px',
+        height: '100vh',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'fixed',
+        left: 0,
+        top: 0
+      }}
+    >
       <h3 style={{ marginBottom: '24px', fontSize: '18px' }}>Menu</h3>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
         {(user.role === 'Kepala Subdirektorat' || user.role === 'Kepala Seksi') && (
           <>
-            <li style={{ marginBottom: '12px' }}>
-              <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
-            </li>
-            <li style={{ marginBottom: '12px' }}>
-              <Link to="/daftar-pengaduan" style={linkStyle}>Daftar Pengaduan</Link>
-            </li>
+            <SidebarItem to="/dashboard" label="Dashboard" />
+            <SidebarItem to="/daftar-pengaduan" label="Daftar Pengaduan" />
           </>
         )}
-
         {user.role === 'Kepala Subdirektorat' && (
-          <li style={{ marginBottom: '12px' }}>
-            <Link to="/daftar-pegawai" style={linkStyle}>Daftar Pegawai</Link>
-          </li>
+          <SidebarItem to="/daftar-pegawai" label="Daftar Pegawai" />
         )}
-
         {user.role === 'Petugas Dashboard' && (
           <>
-            <li style={{ marginBottom: '12px' }}>
-              <Link to="/input-pengaduan" style={linkStyle}>Input Pengaduan</Link>
-            </li>
-            <li style={{ marginBottom: '12px' }}>
-              <Link to="/input-pegawai" style={linkStyle}>Input Pegawai</Link>
-            </li>
+            <SidebarItem to="/input-pengaduan" label="Input Pengaduan" />
+            <SidebarItem to="/input-pegawai" label="Input Pegawai" />
           </>
         )}
       </ul>
@@ -67,11 +68,25 @@ const Sidebar = ({ className = '' }) => {
   );
 };
 
-const linkStyle = {
-  color: '#ecf0f1',
-  textDecoration: 'none',
-  fontWeight: '500',
-  fontSize: '15px'
-};
+const SidebarItem = ({ to, label }) => (
+  <li style={{ marginBottom: '12px' }}>
+    <Link
+      to={to}
+      style={{
+        color: 'white',
+        textDecoration: 'none',
+        fontWeight: '500',
+        fontSize: '15px',
+        display: 'block',
+        padding: '8px 12px',
+        borderRadius: '6px'
+      }}
+      onMouseEnter={(e) => (e.target.style.backgroundColor = '#34495e')}
+      onMouseLeave={(e) => (e.target.style.backgroundColor = 'transparent')}
+    >
+      {label}
+    </Link>
+  </li>
+);
 
 export default Sidebar;
