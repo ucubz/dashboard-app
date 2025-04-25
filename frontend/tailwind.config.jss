@@ -7,21 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#2D76E2",         // Biru tombol login
+        primary: "#2D76E2",         // Tombol biru
         background: "#E6F0FA",      // Background halaman
-        card: "#FFFFFF",            // Warna kotak form
-        textMain: "#333333",        // Judul & label
-        danger: "#E53E3E",          // Untuk error message
+        card: "#FFFFFF",            // Warna form
+        textMain: "#333333",        // Warna teks
+        danger: "#E53E3E",          // Error message
       },
       fontFamily: {
-        sans: ["'Inter'", "sans-serif"], // Ganti ke font default yang clean (atau sesuaikan dengan Figma kalau pakai font lain)
+        sans: ["Inter", "sans-serif"],
       },
       borderRadius: {
-        xl: "1rem",          // Untuk card
-        lg: "0.5rem",        // Untuk input
+        xl: "1rem",
+        lg: "0.5rem",
       },
       boxShadow: {
-        card: "0 4px 16px rgba(0, 0, 0, 0.08)", // Shadow form
+        card: "0 4px 16px rgba(0, 0, 0, 0.08)",
       },
     },
   },
